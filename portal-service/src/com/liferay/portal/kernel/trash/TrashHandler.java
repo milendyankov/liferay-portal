@@ -17,12 +17,10 @@ package com.liferay.portal.kernel.trash;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.ContainerModel;
-import com.liferay.portal.model.Group;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portlet.trash.model.TrashEntry;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.portlet.PortletRequest;
@@ -109,18 +107,6 @@ public interface TrashHandler {
 		throws PortalException, SystemException;
 
 	/**
-	 * Deletes the group's attachments that were trashed before the given date.
-	 *
-	 * @param  group ID the primary key of the group
-	 * @param  date the date from which attachments will be deleted
-	 * @throws PortalException if any one of the attachment file paths were
-	 *         invalid
-	 * @throws SystemException if a system exception occurred
-	 */
-	public void deleteTrashAttachments(Group group, Date date)
-		throws PortalException, SystemException;
-
-	/**
 	 * Deletes all the model entities with the primary keys.
 	 *
 	 * @param  classPKs the primary keys of the model entities to delete
@@ -187,6 +173,8 @@ public interface TrashHandler {
 	 */
 	public ContainerModel getContainerModel(long containerModelId)
 		throws PortalException, SystemException;
+
+	public String getContainerModelClassName();
 
 	/**
 	 * Returns the name of the container model (e.g. folder name).
@@ -268,6 +256,9 @@ public interface TrashHandler {
 	 *         trash entry listed in a search result
 	 */
 	public String getDeleteMessage();
+
+	public ContainerModel getParentContainerModel(long classPK)
+		throws PortalException, SystemException;
 
 	public List<ContainerModel> getParentContainerModels(long containerModelId)
 		throws PortalException, SystemException;
@@ -386,6 +377,8 @@ public interface TrashHandler {
 	public boolean isInTrash(long classPK)
 		throws PortalException, SystemException;
 
+	public boolean isMovable();
+
 	/**
 	 * Returns <code>true</code> if the model entity can be restored to its
 	 * original location.
@@ -406,6 +399,10 @@ public interface TrashHandler {
 	public boolean isRestorable(long classPK)
 		throws PortalException, SystemException;
 
+	public void moveEntry(
+			long classPK, long containerModelId, ServiceContext serviceContext)
+		throws PortalException, SystemException;
+
 	/**
 	 * Moves the model entity with the primary key out of the Recycle Bin to a
 	 * new destination identified by the container model ID.
@@ -414,13 +411,12 @@ public interface TrashHandler {
 	 * @param  containerModelId the primary key of the destination container
 	 *         model
 	 * @param  serviceContext the service context
-	 * @return the moved model entity
 	 * @throws PortalException if a model entity with the primary key or the
 	 *         destination container model with the primary key could not be
 	 *         found
 	 * @throws SystemException if a system exception occurred
 	 */
-	public TrashEntry moveTrashEntry(
+	public void moveTrashEntry(
 			long classPK, long containerModelId, ServiceContext serviceContext)
 		throws PortalException, SystemException;
 

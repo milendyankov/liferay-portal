@@ -14,14 +14,20 @@
 
 package com.liferay.portlet.documentlibrary.trash;
 
+import com.liferay.portal.InvalidRepositoryException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.repository.Repository;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.trash.TrashActionKeys;
 import com.liferay.portal.kernel.trash.TrashRenderer;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.model.ContainerModel;
+import com.liferay.portal.repository.liferayrepository.LiferayRepository;
 import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.service.RepositoryServiceUtil;
+import com.liferay.portal.service.ServiceContext;
 import com.liferay.portlet.documentlibrary.model.DLFolder;
 import com.liferay.portlet.documentlibrary.service.DLAppLocalServiceUtil;
 import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
@@ -102,6 +108,21 @@ public class DLFolderTrashHandler extends DLBaseTrashHandler {
 	}
 
 	@Override
+	public ContainerModel getParentContainerModel(long classPK)
+		throws PortalException, SystemException {
+
+		DLFolder dlFolder = getDLFolder(classPK);
+
+		long parentFolderId = dlFolder.getParentFolderId();
+
+		if (parentFolderId <= 0) {
+			return null;
+		}
+
+		return getContainerModel(parentFolderId);
+	}
+
+	@Override
 	public String getRestoreLink(PortletRequest portletRequest, long classPK)
 		throws PortalException, SystemException {
 
@@ -162,6 +183,32 @@ public class DLFolderTrashHandler extends DLBaseTrashHandler {
 		return false;
 	}
 
+	@Override
+	public boolean isRestorable(long classPK)
+		throws PortalException, SystemException {
+
+		DLFolder dlFolder = getDLFolder(classPK);
+
+		return !dlFolder.isInTrashFolder();
+	}
+
+	@Override
+	public void moveEntry(
+			long classPK, long containerModelId, ServiceContext serviceContext)
+		throws PortalException, SystemException {
+
+		DLAppServiceUtil.moveFolder(classPK, containerModelId, serviceContext);
+	}
+
+	@Override
+	public void moveTrashEntry(
+			long classPK, long containerModelId, ServiceContext serviceContext)
+		throws PortalException, SystemException {
+
+		DLAppServiceUtil.moveFolderFromTrash(
+			classPK, containerModelId, serviceContext);
+	}
+
 	public void restoreTrashEntries(long[] classPKs)
 		throws PortalException, SystemException {
 
@@ -179,6 +226,22 @@ public class DLFolderTrashHandler extends DLBaseTrashHandler {
 		dlFolder.setName(name);
 
 		DLFolderLocalServiceUtil.updateDLFolder(dlFolder);
+	}
+
+	@Override
+	protected Repository getRepository(long classPK)
+		throws PortalException, SystemException {
+
+		Repository repository = RepositoryServiceUtil.getRepositoryImpl(
+			classPK, 0, 0);
+
+		if (!(repository instanceof LiferayRepository)) {
+			throw new InvalidRepositoryException(
+				"Repository " + repository.getRepositoryId() +
+					" does not support trash operations");
+		}
+
+		return repository;
 	}
 
 	@Override

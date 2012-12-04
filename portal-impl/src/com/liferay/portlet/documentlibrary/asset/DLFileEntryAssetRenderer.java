@@ -109,23 +109,6 @@ public class DLFileEntryAssetRenderer
 		return assetRendererFactory.getPortletId();
 	}
 
-	@Override
-	public String getRestorePath(RenderRequest renderRequest) {
-		DLFileEntry dlFileEntry = (DLFileEntry)_fileEntry.getModel();
-
-		if ((dlFileEntry != null) && dlFileEntry.isInTrashFolder()) {
-			renderRequest.setAttribute(
-				WebKeys.DOCUMENT_LIBRARY_FILE_ENTRY, _fileEntry);
-			renderRequest.setAttribute(
-				WebKeys.DOCUMENT_LIBRARY_FILE_VERSION, _fileVersion);
-
-			return
-				"/html/portlet/document_library/trash/file_entry_restore.jsp";
-		}
-
-		return null;
-	}
-
 	public String getSummary(Locale locale) {
 		return HtmlUtil.stripHtml(_fileEntry.getDescription());
 	}
@@ -270,15 +253,6 @@ public class DLFileEntryAssetRenderer
 		else {
 			return null;
 		}
-	}
-
-	@Override
-	public String renderActions(
-		RenderRequest renderRequest, RenderResponse renderResponse) {
-
-		renderRequest.setAttribute("view_entries.jsp-fileEntry", _fileEntry);
-
-		return "/html/portlet/document_library/file_entry_action.jsp";
 	}
 
 	private FileEntry _fileEntry;

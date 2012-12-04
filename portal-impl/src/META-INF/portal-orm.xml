@@ -3616,7 +3616,9 @@
 			<basic name="statusDate">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
+			<transient name="containerModelId" />
 			<transient name="modelAttributes" />
+			<transient name="parentContainerModelId" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 			<transient name="statusByUserUuid" />
@@ -3904,6 +3906,7 @@
 			<transient name="showPortletInactive" />
 			<transient name="socialActivityInterpreterClass" />
 			<transient name="socialRequestInterpreterClass" />
+			<transient name="stagedModelDataHandlerClasses" />
 			<transient name="static" />
 			<transient name="staticStart" />
 			<transient name="strutsPath" />
@@ -4288,7 +4291,7 @@
 	<entity class="com.liferay.portlet.messageboards.model.impl.MBMessageImpl" name="MBMessage">
 		<table name="MBMessage" />
 		<attributes>
-			<transient name="attachmentsDir" />
+			<transient name="attachmentsFolderId" />
 		</attributes>
 	</entity>
 	<entity class="com.liferay.portlet.messageboards.model.impl.MBStatsUserImpl" name="MBStatsUser">

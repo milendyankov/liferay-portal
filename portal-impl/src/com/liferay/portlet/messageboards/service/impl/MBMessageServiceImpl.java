@@ -148,7 +148,7 @@ public class MBMessageServiceImpl extends MBMessageServiceBaseImpl {
 			ServiceContext serviceContext)
 		throws PortalException, SystemException {
 
-		MBMessage parentMessage = mbMessagePersistence.fetchByPrimaryKey(
+		MBMessage parentMessage = mbMessagePersistence.findByPrimaryKey(
 			parentMessageId);
 
 		checkReplyToPermission(
@@ -579,6 +579,17 @@ public class MBMessageServiceImpl extends MBMessageServiceBaseImpl {
 			messages, themeDisplay);
 	}
 
+	public void restoreMessageAttachmentFromTrash(
+			long messageId, String fileName)
+		throws PortalException, SystemException {
+
+		MBMessagePermission.check(
+			getPermissionChecker(), messageId, ActionKeys.ADD_FILE);
+
+		mbMessageLocalService.restoreMessageAttachmentFromTrash(
+			getUserId(), messageId, fileName);
+	}
+
 	public void subscribeMessage(long messageId)
 		throws PortalException, SystemException {
 
@@ -686,11 +697,7 @@ public class MBMessageServiceImpl extends MBMessageServiceBaseImpl {
 				return;
 			}
 
-			MBMessage parentMessage = mbMessagePersistence.fetchByPrimaryKey(
-				parentMessageId);
-
-			if ((parentMessage == null) ||
-				!MBCategoryPermission.contains(
+			if (!MBCategoryPermission.contains(
 					getPermissionChecker(), groupId, categoryId,
 					ActionKeys.REPLY_TO_MESSAGE)) {
 
