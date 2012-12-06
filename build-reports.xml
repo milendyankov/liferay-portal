@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+
+<project name="portal" basedir="." default="jdepend">
+
+
+   <taskdef name="javancss"
+            classname="javancss.JavancssAntTask"
+            classpath="${CLASSPATH}"/>
+
+	<target name="javancss">
+	   <javancss srcdir="."
+            abortOnFail="false"
+				generateReport="true" 
+				outputfile="./reports/javancss-report.xml"
+				format="xml"
+				classMetrics="false"
+				functionMetrics="false"
+            includes="
+					portal-impl/src/**/*.java,
+					portal-service/src/**/*.java,
+					support-tomcat/src/**/*.java,
+					util-bridges/src/**/*.java,
+					util-java/src/**/*.java,
+					util-taglib/src/**/*.java"	
+				/>
+
+	  <xslt in="reports/javancss-report.xml" out="reports/javancss-report.html"
+		 style="${ant.home}/etc/javancss/javancss2html.xsl" />
+
+	  <!-- xslt in="reports/javancss-report.xml" out="reports/javancss-wfncss-report.html"
+		 style="${ant.home}/etc/javancss/wfncss.xsl" /  -->
+	
+	  <xslt in="reports/javancss-report.xml" out="reports/javancss-method-report.html"
+		 style="${ant.home}/etc/javancss/javancss2methodhtml.xsl" />
+
+	</target>
+
+	<target name="jdepend">
+
+		<jdepend format="xml" outputfile="reports/jdepend-report.xml">
+			<exclude name="java.*"/>
+			<exclude name="javax.*"/>
+			<classespath>
+				<pathelement location="portal-impl/classes" />
+				<pathelement location="portal-service/classes" />
+				<pathelement location="support-tomcat/classes" />
+				<pathelement location="util-bridges/classes" />
+				<pathelement location="util-java/classes" />
+				<pathelement location="util-taglib/classes" />
+			</classespath>
+			<!-- classpath location="bin" / -->
+		</jdepend>
+
+	  <xslt basedir="reports" destdir="reports"
+		 includes="jdepend-report.xml" 
+		 style="${ant.home}/etc/jdepend.xsl" />
+
+	</target>
+
+</project>
+
