@@ -1305,7 +1305,7 @@ public class RoleLocalServiceImpl extends RoleLocalServiceBaseImpl {
 				continue;
 			}
 
-			setRolePermissions(
+			addRolePermissions(
 				role, portletId,
 				new String[] {
 					ActionKeys.ACCESS_IN_CONTROL_PANEL
@@ -1313,17 +1313,17 @@ public class RoleLocalServiceImpl extends RoleLocalServiceBaseImpl {
 		}
 	}
 
-	protected void setRolePermissions(
+	protected void addRolePermissions(
 			Role role, String name, String[] actionIds)
 		throws PortalException, SystemException {
 
 		if (resourceBlockLocalService.isSupported(name)) {
-			resourceBlockLocalService.setCompanyScopePermissions(
+			resourceBlockLocalService.addCompanyScopePermissions(
 				role.getCompanyId(), name, role.getRoleId(),
 				Arrays.asList(actionIds));
 		}
 		else {
-			resourcePermissionLocalService.setResourcePermissions(
+			resourcePermissionLocalService.addResourcePermissions(
 				role.getCompanyId(), name, ResourceConstants.SCOPE_COMPANY,
 				String.valueOf(role.getCompanyId()), role.getRoleId(),
 				actionIds);
