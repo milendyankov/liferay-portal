@@ -206,7 +206,18 @@ public class RoleLocalServiceImpl extends RoleLocalServiceBaseImpl {
 				indexer.reindex(userId);
 			}
 		}
+		
+		// Default VIEW permissions on self
 
+		if (PropsValues.PERMISSIONS_ROLE_HAS_VIEW_PERMISSION_ON_SELF_BY_DEFAULT) {
+			resourcePermissionLocalService.addResourcePermissions(	
+				role.getCompanyId(), Role.class.getName(), 
+				ResourceConstants.SCOPE_INDIVIDUAL,
+				String.valueOf(role.getRoleId()),
+				role.getRoleId(), new String[] {ActionKeys.VIEW}
+				);	
+		}
+		
 		return role;
 	}
 
