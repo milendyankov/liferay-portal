@@ -33,14 +33,13 @@ public class Dimensions implements Serializable, Comparable<Dimensions> {
 	}
 
 	@Override
-	public int compareTo(Dimensions o) {
-
-		if (_width != o.getWidth()) {
-			return _width - o.getWidth();
+	public int compareTo(Dimensions dimensions) {
+		if (_width != dimensions.getWidth()) {
+			return _width - dimensions.getWidth();
 		}
 		else {
-			if (_height != o.getHeight()) {
-				return _height - o.getHeight();
+			if (_height != dimensions.getHeight()) {
+				return _height - dimensions.getHeight();
 			}
 			else {
 				return 0;
@@ -50,48 +49,52 @@ public class Dimensions implements Serializable, Comparable<Dimensions> {
 
 	@Override
 	public boolean equals(Object obj) {
-
-		if (this == obj)
+		if (this == obj) {
 			return true;
+		}
 
-		if (obj == null)
+		if (obj == null) {
 			return false;
+		}
 
-		if (getClass() != obj.getClass())
+		if (getClass() != obj.getClass()) {
 			return false;
-		Dimensions other = (Dimensions)obj;
+		}
 
-		if (_height != other._height)
-			return false;
+		Dimensions dimensions = (Dimensions)obj;
 
-		if (_width != other._width)
+		if (_height != dimensions._height) {
 			return false;
+		}
+
+		if (_width != dimensions._width) {
+			return false;
+		}
+
 		return true;
 	}
 
 	public int getHeight() {
-
 		return _height;
 	}
 
 	public int getWidth() {
-
 		return _width;
 	}
 
 	@Override
 	public int hashCode() {
-
 		final int prime = 31;
 		int result = 1;
+
 		result = prime * result + _height;
 		result = prime * result + _width;
+
 		return result;
 	}
 
 	@Override
 	public String toString() {
-
 		StringBundler sb = new StringBundler(5);
 
 		sb.append("{height=");
