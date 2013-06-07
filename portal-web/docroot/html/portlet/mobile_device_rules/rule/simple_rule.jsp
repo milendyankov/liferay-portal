@@ -21,15 +21,14 @@ MDRRule rule = (MDRRule)request.getAttribute(WebKeys.MOBILE_DEVICE_RULES_RULE);
 
 Set<String> operatingSystems = Collections.emptySet();
 int tablet = 0;
-String separator = " x ";
-String maxDisplayHeight = "";
-String maxDisplayWidth = "";
-String maxResolutionHeight = "";
-String maxResolutionWidth = "";
-String minDisplayHeight = "";
-String minDisplayWidth = "";
-String minResolutionHeight = "";
-String minResolutionWidth = "";
+String maxDisplayHeight = StringPool.BLANK;
+String maxDisplayWidth = StringPool.BLANK;
+String maxResolutionHeight = StringPool.BLANK;
+String maxResolutionWidth = StringPool.BLANK;
+String minDisplayHeight = StringPool.BLANK;
+String minDisplayWidth = StringPool.BLANK;
+String minResolutionHeight = StringPool.BLANK;
+String minResolutionWidth = StringPool.BLANK;
 
 if (rule != null) {
 	UnicodeProperties typeSettingsProperties = rule.getTypeSettingsProperties();
@@ -98,9 +97,8 @@ Set<Dimensions> knownScreenResolutions = DeviceDetectionUtil.getKnownScreenResol
 		label="width"
 		name="<%= SimpleRuleHandler.PROPERTY_DISPLAY_MIN_WIDTH %>"
 		style="max-width:50px;"
-		value="<%= minDisplayWidth %>"
-		/>
-	<%= separator %>
+		value="<%= minDisplayWidth %>" />
+	<%= _SEPARATOR %>
 	<aui:input
 		cssClass="custom-min-display-field aui-field-digits"
 		id="<%= SimpleRuleHandler.PROPERTY_DISPLAY_MIN_HEIGHT %>"
@@ -108,8 +106,7 @@ Set<Dimensions> knownScreenResolutions = DeviceDetectionUtil.getKnownScreenResol
 		label="height"
 		name="<%= SimpleRuleHandler.PROPERTY_DISPLAY_MIN_HEIGHT %>"
 		style="max-width:50px;"
-		value="<%= minDisplayHeight %>"
-		/>
+		value="<%= minDisplayHeight %>" />
 
 	(
 	<aui:select
@@ -120,8 +117,7 @@ Set<Dimensions> knownScreenResolutions = DeviceDetectionUtil.getKnownScreenResol
 		label="known-dispay-sizes"
 		multiple="<%= false %>"
 		name="min-known-dispay-sizes"
-		style="max-width:100px;"
-		>
+		style="max-width:100px;">
 
 		<aui:option label="" />
 
@@ -129,7 +125,7 @@ Set<Dimensions> knownScreenResolutions = DeviceDetectionUtil.getKnownScreenResol
 		for (Dimensions knownDisplaySize : knownDisplaySizes) {
 		%>
 
-			<aui:option label="<%= knownDisplaySize.getWidth() + separator + knownDisplaySize.getHeight() %>" />
+			<aui:option label="<%= knownDisplaySize.getWidth() + _SEPARATOR + knownDisplaySize.getHeight() %>" />
 
 		<%
 		}
@@ -149,9 +145,8 @@ Set<Dimensions> knownScreenResolutions = DeviceDetectionUtil.getKnownScreenResol
 		label="width"
 		name="<%= SimpleRuleHandler.PROPERTY_DISPLAY_MAX_WIDTH %>"
 		style="max-width:50px;"
-		value="<%= maxDisplayWidth %>"
-		/>
-	<%= separator %>
+		value="<%= maxDisplayWidth %>" />
+	<%= _SEPARATOR %>
 	<aui:input
 		cssClass="custom-max-display-field aui-field-digits"
 		id="<%= SimpleRuleHandler.PROPERTY_DISPLAY_MAX_HEIGHT %>"
@@ -159,8 +154,7 @@ Set<Dimensions> knownScreenResolutions = DeviceDetectionUtil.getKnownScreenResol
 		label="height"
 		name="<%= SimpleRuleHandler.PROPERTY_DISPLAY_MAX_HEIGHT %>"
 		style="max-width:50px;"
-		value="<%= maxDisplayHeight %>"
-		/>
+		value="<%= maxDisplayHeight %>" />
 
 	(
 	<aui:select
@@ -171,8 +165,7 @@ Set<Dimensions> knownScreenResolutions = DeviceDetectionUtil.getKnownScreenResol
 		label="known-dispay-sizes"
 		multiple="<%= false %>"
 		name="max-known-dispay-sizes"
-		style="max-width:100px;"
-		>
+		style="max-width:100px;">
 
 		<aui:option label="" />
 
@@ -180,7 +173,7 @@ Set<Dimensions> knownScreenResolutions = DeviceDetectionUtil.getKnownScreenResol
 		for (Dimensions knownDisplaySize : knownDisplaySizes) {
 		%>
 
-			<aui:option label="<%= knownDisplaySize.getWidth() + separator + knownDisplaySize.getHeight() %>" />
+			<aui:option label="<%= knownDisplaySize.getWidth() + _SEPARATOR + knownDisplaySize.getHeight() %>" />
 
 		<%
 		}
@@ -202,9 +195,8 @@ Set<Dimensions> knownScreenResolutions = DeviceDetectionUtil.getKnownScreenResol
 		label="width"
 		name="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_MIN_WIDTH %>"
 		style="max-width:50px;"
-		value="<%= minResolutionWidth %>"
-		/>
-	<%= separator %>
+		value="<%= minResolutionWidth %>" />
+	<%= _SEPARATOR %>
 	<aui:input
 		cssClass="custom-min-resolution-field aui-field-digits"
 		id="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_MIN_HEIGHT %>"
@@ -212,8 +204,7 @@ Set<Dimensions> knownScreenResolutions = DeviceDetectionUtil.getKnownScreenResol
 		label="height"
 		name="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_MIN_HEIGHT %>"
 		style="max-width:50px;"
-		value="<%= minResolutionHeight %>"
-		/>
+		value="<%= minResolutionHeight %>" />
 
 	(
 	<aui:select
@@ -233,7 +224,7 @@ Set<Dimensions> knownScreenResolutions = DeviceDetectionUtil.getKnownScreenResol
 		for (Dimensions knownScreenResolution : knownScreenResolutions) {
 		%>
 
-			<aui:option label="<%= knownScreenResolution.getWidth() + separator + knownScreenResolution.getHeight() %>" />
+			<aui:option label="<%= knownScreenResolution.getWidth() + _SEPARATOR + knownScreenResolution.getHeight() %>" />
 
 		<%
 		}
@@ -253,9 +244,8 @@ Set<Dimensions> knownScreenResolutions = DeviceDetectionUtil.getKnownScreenResol
 		label="width"
 		name="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_MAX_WIDTH %>"
 		style="max-width:50px;"
-		value="<%= maxResolutionWidth %>"
-		/>
-	<%= separator %>
+		value="<%= maxResolutionWidth %>" />
+	<%= _SEPARATOR %>
 	<aui:input
 		cssClass="custom-max-resolution-field aui-field-digits"
 		id="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_MAX_HEIGHT %>"
@@ -263,8 +253,7 @@ Set<Dimensions> knownScreenResolutions = DeviceDetectionUtil.getKnownScreenResol
 		label="height"
 		name="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_MAX_HEIGHT %>"
 		style="max-width:50px;"
-		value="<%= maxResolutionHeight %>"
-		/>
+		value="<%= maxResolutionHeight %>" />
 
 	(
 	<aui:select
@@ -275,8 +264,7 @@ Set<Dimensions> knownScreenResolutions = DeviceDetectionUtil.getKnownScreenResol
 		label="known-screen-resolutions"
 		multiple="<%= false %>"
 		name="max-known-screen-resolutions"
-		style="max-width:100px;"
-		>
+		style="max-width:100px;">
 
 		<aui:option label="" />
 
@@ -284,7 +272,7 @@ Set<Dimensions> knownScreenResolutions = DeviceDetectionUtil.getKnownScreenResol
 		for (Dimensions knownScreenResolution : knownScreenResolutions) {
 		%>
 
-			<aui:option label="<%= knownScreenResolution.getWidth() + separator + knownScreenResolution.getHeight() %>" />
+			<aui:option label="<%= knownScreenResolution.getWidth() + _SEPARATOR + knownScreenResolution.getHeight() %>" />
 
 		<%
 		}
@@ -295,11 +283,7 @@ Set<Dimensions> knownScreenResolutions = DeviceDetectionUtil.getKnownScreenResol
 
 </div>
 
-
 <script>
-
-
-
 	YUI().use(
 		'aui-node',
 		function(Y) {
@@ -322,7 +306,7 @@ Set<Dimensions> knownScreenResolutions = DeviceDetectionUtil.getKnownScreenResol
 			maxKnownSizes.on(
 			    'change',
 			    function() {
-			  		var sizes = maxKnownSizes.val().split("<%= separator %>");
+			  		var sizes = maxKnownSizes.val().split("<%= _SEPARATOR %>");
 			  		maxSizeWidth.val(sizes[0]);
 			  		maxSizeHeight.val(sizes[1]);
 			    }
@@ -331,7 +315,7 @@ Set<Dimensions> knownScreenResolutions = DeviceDetectionUtil.getKnownScreenResol
 			minKnownSizes.on(
 			    'change',
 			    function() {
-			  		var sizes = minKnownSizes.val().split("<%= separator %>");
+			  		var sizes = minKnownSizes.val().split("<%= _SEPARATOR %>");
 			  		minSizeWidth.val(sizes[0]);
 			  		minSizeHeight.val(sizes[1]);
 			    }
@@ -340,7 +324,7 @@ Set<Dimensions> knownScreenResolutions = DeviceDetectionUtil.getKnownScreenResol
 			maxKnownResolutions.on(
 				'change',
 				function() {
-					var sizes = maxKnownResolutions.val().split("<%= separator %>");
+					var sizes = maxKnownResolutions.val().split("<%= _SEPARATOR %>");
 					maxResWidth.val(sizes[0]);
 					maxResHeight.val(sizes[1]);
 			  	}
@@ -349,7 +333,7 @@ Set<Dimensions> knownScreenResolutions = DeviceDetectionUtil.getKnownScreenResol
 			minKnownResolutions.on(
 				'change',
 				function() {
-					var sizes = minKnownResolutions.val().split("<%= separator %>");
+					var sizes = minKnownResolutions.val().split("<%= _SEPARATOR %>");
 					minResWidth.val(sizes[0]);
 					minResHeight.val(sizes[1]);
 			  	}
@@ -386,3 +370,7 @@ Set<Dimensions> knownScreenResolutions = DeviceDetectionUtil.getKnownScreenResol
 		}
 	);
 </script>
+
+<%!
+private final static String _SEPARATOR = " x ";
+%>
