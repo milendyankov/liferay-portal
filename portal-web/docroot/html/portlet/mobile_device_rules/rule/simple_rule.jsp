@@ -62,240 +62,243 @@ Set<Dimensions> knownDisplaySizes = DeviceDetectionUtil.getKnownDisplaySizes();
 Set<Dimensions> knownScreenResolutions = DeviceDetectionUtil.getKnownScreenResolutions();
 %>
 
-<h3><liferay-ui:message key="generic-product-information" /></h3>
+<c:choose>
+	<c:when test="<%= PluginPackageUtil.isInstalled("wurfl-web") %>">
+		<h3><liferay-ui:message key="generic-product-information" /></h3>
 
-<aui:select helpMessage='<%= PluginPackageUtil.isInstalled("wurfl-web") ? StringPool.BLANK : "os-help" %>' multiple="<%= true %>" name="os">
+		<aui:select multiple="<%= true %>" name="os">
 
-	<aui:option label="any-os" selected="<%= operatingSystems.isEmpty() %>" value="" />
+			<aui:option label="any-os" selected="<%= operatingSystems.isEmpty() %>" value="" />
 
-	<%
-	Set<VersionableName> knownOperationSystems = DeviceDetectionUtil.getKnownOperatingSystems();
+			<%
+			Set<VersionableName> knownOperationSystems = DeviceDetectionUtil.getKnownOperatingSystems();
 
-	for (VersionableName knownOperationSystem : knownOperationSystems) {
-	%>
+			for (VersionableName knownOperationSystem : knownOperationSystems) {
+			%>
 
-		<aui:option label="<%= knownOperationSystem.getName() %>" selected="<%= operatingSystems.contains(knownOperationSystem.getName()) %>" />
+				<aui:option label="<%= knownOperationSystem.getName() %>" selected="<%= operatingSystems.contains(knownOperationSystem.getName()) %>" />
 
-	<%
-	}
-	%>
+			<%
+			}
+			%>
 
-</aui:select>
+		</aui:select>
 
-<aui:select label="device-type" name="tablet">
-	<aui:option label="any" selected="<%= tablet == 0 %>" value="" />
-	<aui:option label="tablets" selected="<%= tablet == 1 %>" value="<%= true %>" />
-	<aui:option label="other-devices" selected="<%= tablet == 2 %>" value="<%= false %>" />
-</aui:select>
+		<aui:select label="device-type" name="tablet">
+			<aui:option label="any" selected="<%= tablet == 0 %>" value="" />
+			<aui:option label="tablets" selected="<%= tablet == 1 %>" value="<%= true %>" />
+			<aui:option label="other-devices" selected="<%= tablet == 2 %>" value="<%= false %>" />
+		</aui:select>
 
-<h3><liferay-ui:message key="screen-size-in-millimiters" /></h3>
+		<h3><liferay-ui:message key="screen-size-in-millimiters" /></h3>
 
 
-<div class="row-fields">
-	<liferay-ui:message key="minimum-display-size" />
+		<div class="row-fields">
+			<liferay-ui:message key="minimum-display-size" />
 
-	<aui:input
-		cssClass="custom-min-display-field aui-field-digits"
-		id="<%= SimpleRuleHandler.PROPERTY_DISPLAY_WIDTH_MIN %>"
-		inlineField="<%= true %>"
-		label="width"
-		name="<%= SimpleRuleHandler.PROPERTY_DISPLAY_WIDTH_MIN %>"
-		style="max-width:50px;"
-		value="<%= displayWidthMin %>" />
-	<%= _SEPARATOR %>
-	<aui:input
-		cssClass="custom-min-display-field aui-field-digits"
-		id="<%= SimpleRuleHandler.PROPERTY_DISPLAY_HEIGHT_MIN %>"
-		inlineField="<%= true %>"
-		label="height"
-		name="<%= SimpleRuleHandler.PROPERTY_DISPLAY_HEIGHT_MIN %>"
-		style="max-width:50px;"
-		value="<%= displayHeightMin %>" />
+			<aui:input
+				cssClass="custom-min-display-field aui-field-digits"
+				id="<%= SimpleRuleHandler.PROPERTY_DISPLAY_WIDTH_MIN %>"
+				inlineField="<%= true %>"
+				label="width"
+				name="<%= SimpleRuleHandler.PROPERTY_DISPLAY_WIDTH_MIN %>"
+				style="max-width:50px;"
+				value="<%= displayWidthMin %>" />
+			<%= _SEPARATOR %>
+			<aui:input
+				cssClass="custom-min-display-field aui-field-digits"
+				id="<%= SimpleRuleHandler.PROPERTY_DISPLAY_HEIGHT_MIN %>"
+				inlineField="<%= true %>"
+				label="height"
+				name="<%= SimpleRuleHandler.PROPERTY_DISPLAY_HEIGHT_MIN %>"
+				style="max-width:50px;"
+				value="<%= displayHeightMin %>" />
 
-	(
-	<aui:select
-		helpMessage='<%= PluginPackageUtil.isInstalled("wurfl-web") ? StringPool.BLANK : "known-dispay-sizes-help" %>'
-		id="min-known-dispay-sizes"
-		inlineField="<%= true %>"
-		inlineLabel="true"
-		label="known-dispay-sizes"
-		multiple="<%= false %>"
-		name="min-known-dispay-sizes"
-		style="max-width:100px;">
+			(<liferay-ui:message key="known-display-sizes" />
 
-		<aui:option label="" />
+			<aui:select
+				id="min-known-display-sizes"
+				inlineField="<%= true %>"
+				label=""
+				multiple="<%= false %>"
+				name="min-known-display-sizes"
+				style="max-width:100px;">
 
-		<%
-		for (Dimensions knownDisplaySize : knownDisplaySizes) {
-		%>
+				<aui:option label="" />
 
-			<aui:option label="<%= knownDisplaySize.getWidth() + _SEPARATOR + knownDisplaySize.getHeight() %>" />
+				<%
+				for (Dimensions knownDisplaySize : knownDisplaySizes) {
+				%>
 
-		<%
-		}
-		%>
+					<aui:option label="<%= knownDisplaySize.getWidth() + _SEPARATOR + knownDisplaySize.getHeight() %>" />
 
-	</aui:select>
-	)
-</div>
+				<%
+				}
+				%>
 
-<div class="row-fields">
-	<liferay-ui:message key="maximum-display-size" />
+			</aui:select>
+			)
+		</div>
 
-	<aui:input
-		cssClass="custom-max-display-field aui-field-digits"
-		id="<%= SimpleRuleHandler.PROPERTY_DISPLAY_WIDTH_MAX %>"
-		inlineField="<%= true %>"
-		label="width"
-		name="<%= SimpleRuleHandler.PROPERTY_DISPLAY_WIDTH_MAX %>"
-		style="max-width:50px;"
-		value="<%= displayWidthMax %>" />
-	<%= _SEPARATOR %>
-	<aui:input
-		cssClass="custom-max-display-field aui-field-digits"
-		id="<%= SimpleRuleHandler.PROPERTY_DISPLAY_HEIGHT_MAX %>"
-		inlineField="<%= true %>"
-		label="height"
-		name="<%= SimpleRuleHandler.PROPERTY_DISPLAY_HEIGHT_MAX %>"
-		style="max-width:50px;"
-		value="<%= displayHeightMax %>" />
+		<div class="row-fields">
+			<liferay-ui:message key="maximum-display-size" />
 
-	(
-	<aui:select
-		helpMessage='<%= PluginPackageUtil.isInstalled("wurfl-web") ? StringPool.BLANK : "known-dispay-sizes-help" %>'
-		id="max-known-dispay-sizes"
-		inlineField="<%= true %>"
-		inlineLabel="true"
-		label="known-dispay-sizes"
-		multiple="<%= false %>"
-		name="max-known-dispay-sizes"
-		style="max-width:100px;">
+			<aui:input
+				cssClass="custom-max-display-field aui-field-digits"
+				id="<%= SimpleRuleHandler.PROPERTY_DISPLAY_WIDTH_MAX %>"
+				inlineField="<%= true %>"
+				label="width"
+				name="<%= SimpleRuleHandler.PROPERTY_DISPLAY_WIDTH_MAX %>"
+				style="max-width:50px;"
+				value="<%= displayWidthMax %>" />
+			<%= _SEPARATOR %>
+			<aui:input
+				cssClass="custom-max-display-field aui-field-digits"
+				id="<%= SimpleRuleHandler.PROPERTY_DISPLAY_HEIGHT_MAX %>"
+				inlineField="<%= true %>"
+				label="height"
+				name="<%= SimpleRuleHandler.PROPERTY_DISPLAY_HEIGHT_MAX %>"
+				style="max-width:50px;"
+				value="<%= displayHeightMax %>" />
 
-		<aui:option label="" />
+			(<liferay-ui:message key="known-display-sizes" />
 
-		<%
-		for (Dimensions knownDisplaySize : knownDisplaySizes) {
-		%>
+			<aui:select
+				id="max-known-display-sizes"
+				inlineField="<%= true %>"
+				label=""
+				multiple="<%= false %>"
+				name="max-known-display-sizes"
+				style="max-width:100px;">
 
-			<aui:option label="<%= knownDisplaySize.getWidth() + _SEPARATOR + knownDisplaySize.getHeight() %>" />
+				<aui:option label="" />
 
-		<%
-		}
-		%>
+				<%
+				for (Dimensions knownDisplaySize : knownDisplaySizes) {
+				%>
 
-	</aui:select>
-	)
-</div>
+					<aui:option label="<%= knownDisplaySize.getWidth() + _SEPARATOR + knownDisplaySize.getHeight() %>" />
 
-<h3><liferay-ui:message key="screen-resolution" /></h3>
+				<%
+				}
+				%>
 
-<div class="row-fields">
-	<liferay-ui:message key="minimum-screen-resolution" />
+			</aui:select>
+			)
+		</div>
 
-	<aui:input
-		cssClass="custom-min-resolution-field aui-field-digits"
-		id="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_WIDTH_MIN %>"
-		inlineField="<%= true %>"
-		label="width"
-		name="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_WIDTH_MIN %>"
-		style="max-width:50px;"
-		value="<%= resolutionWidthMin %>" />
-	<%= _SEPARATOR %>
-	<aui:input
-		cssClass="custom-min-resolution-field aui-field-digits"
-		id="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_HEIGHT_MIN %>"
-		inlineField="<%= true %>"
-		label="height"
-		name="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_HEIGHT_MIN %>"
-		style="max-width:50px;"
-		value="<%= resolutionHeightMin %>" />
+		<h3><liferay-ui:message key="screen-resolution" /></h3>
 
-	(
-	<aui:select
-		helpMessage='<%= PluginPackageUtil.isInstalled("wurfl-web") ? StringPool.BLANK : "known-screen-resolutions-help" %>'
-		id="min-known-screen-resolutions"
-		inlineField="<%= true %>"
-		inlineLabel="true"
-		label="known-screen-resolutions"
-		multiple="<%= false %>"
-		name="min-known-screen-resolutions"
-		style="max-width:100px;"
-		>
+		<div class="row-fields">
+			<liferay-ui:message key="minimum-screen-resolution" />
 
-		<aui:option label="" />
+			<aui:input
+				cssClass="custom-min-resolution-field aui-field-digits"
+				id="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_WIDTH_MIN %>"
+				inlineField="<%= true %>"
+				label="width"
+				name="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_WIDTH_MIN %>"
+				style="max-width:50px;"
+				value="<%= resolutionWidthMin %>" />
+			<%= _SEPARATOR %>
+			<aui:input
+				cssClass="custom-min-resolution-field aui-field-digits"
+				id="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_HEIGHT_MIN %>"
+				inlineField="<%= true %>"
+				label="height"
+				name="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_HEIGHT_MIN %>"
+				style="max-width:50px;"
+				value="<%= resolutionHeightMin %>" />
 
-		<%
-		for (Dimensions knownScreenResolution : knownScreenResolutions) {
-		%>
+			(<liferay-ui:message key="known-screen-resolutions" />
 
-			<aui:option label="<%= knownScreenResolution.getWidth() + _SEPARATOR + knownScreenResolution.getHeight() %>" />
+			<aui:select
+				id="min-known-screen-resolutions"
+				inlineField="<%= true %>"
+				label=""
+				multiple="<%= false %>"
+				name="min-known-screen-resolutions"
+				style="max-width:100px;"
+				>
 
-		<%
-		}
-		%>
+				<aui:option label="" />
 
-	</aui:select>
-	)
-</div>
+				<%
+				for (Dimensions knownScreenResolution : knownScreenResolutions) {
+				%>
 
-<div class="row-fields">
-	<liferay-ui:message key="maximum-screen-resolution" />
+					<aui:option label="<%= knownScreenResolution.getWidth() + _SEPARATOR + knownScreenResolution.getHeight() %>" />
 
-	<aui:input
-		cssClass="custom-max-resolution-field aui-field-digits"
-		id="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_WIDTH_MAX %>"
-		inlineField="<%= true %>"
-		label="width"
-		name="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_WIDTH_MAX %>"
-		style="max-width:50px;"
-		value="<%= resolutionWidthMax %>" />
-	<%= _SEPARATOR %>
-	<aui:input
-		cssClass="custom-max-resolution-field aui-field-digits"
-		id="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_HEIGHT_MAX %>"
-		inlineField="<%= true %>"
-		label="height"
-		name="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_HEIGHT_MAX %>"
-		style="max-width:50px;"
-		value="<%= resolutionHeightMax %>" />
+				<%
+				}
+				%>
 
-	(
-	<aui:select
-		helpMessage='<%= PluginPackageUtil.isInstalled("wurfl-web") ? StringPool.BLANK : "known-screen-resolutions-help" %>'
-		id="max-known-screen-resolutions"
-		inlineField="<%= true %>"
-		inlineLabel="true"
-		label="known-screen-resolutions"
-		multiple="<%= false %>"
-		name="max-known-screen-resolutions"
-		style="max-width:100px;">
+			</aui:select>
+			)
+		</div>
 
-		<aui:option label="" />
+		<div class="row-fields">
+			<liferay-ui:message key="maximum-screen-resolution" />
 
-		<%
-		for (Dimensions knownScreenResolution : knownScreenResolutions) {
-		%>
+			<aui:input
+				cssClass="custom-max-resolution-field aui-field-digits"
+				id="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_WIDTH_MAX %>"
+				inlineField="<%= true %>"
+				label="width"
+				name="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_WIDTH_MAX %>"
+				style="max-width:50px;"
+				value="<%= resolutionWidthMax %>" />
+			<%= _SEPARATOR %>
+			<aui:input
+				cssClass="custom-max-resolution-field aui-field-digits"
+				id="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_HEIGHT_MAX %>"
+				inlineField="<%= true %>"
+				label="height"
+				name="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_HEIGHT_MAX %>"
+				style="max-width:50px;"
+				value="<%= resolutionHeightMax %>" />
 
-			<aui:option label="<%= knownScreenResolution.getWidth() + _SEPARATOR + knownScreenResolution.getHeight() %>" />
+			(<liferay-ui:message key="known-screen-resolutions" />
 
-		<%
-		}
-		%>
+			<aui:select
+				id="max-known-screen-resolutions"
+				inlineField="<%= true %>"
+				label=""
+				multiple="<%= false %>"
+				name="max-known-screen-resolutions"
+				style="max-width:100px;">
 
-	</aui:select>
-	)
+				<aui:option label="" />
 
-</div>
+				<%
+				for (Dimensions knownScreenResolution : knownScreenResolutions) {
+				%>
+
+					<aui:option label="<%= knownScreenResolution.getWidth() + _SEPARATOR + knownScreenResolution.getHeight() %>" />
+
+				<%
+				}
+				%>
+
+			</aui:select>
+			)
+
+		</div>
+	</c:when>
+	<c:otherwise>
+		<liferay-ui:message key="the-device-recognition-provider-is-not-present" />
+	</c:otherwise>
+</c:choose>
 
 <script>
 	YUI().use(
 		'aui-node',
 		function(Y) {
-			var maxKnownSizes = Y.one('#<portlet:namespace/>max-known-dispay-sizes');
+			var maxKnownSizes = Y.one('#<portlet:namespace/>max-known-display-sizes');
 			var maxSizeHeight = Y.one('#<portlet:namespace/><%= SimpleRuleHandler.PROPERTY_DISPLAY_HEIGHT_MAX %>');
 			var maxSizeWidth = Y.one('#<portlet:namespace/><%= SimpleRuleHandler.PROPERTY_DISPLAY_WIDTH_MAX %>');
 
-			var minKnownSizes = Y.one('#<portlet:namespace/>min-known-dispay-sizes');
+			var minKnownSizes = Y.one('#<portlet:namespace/>min-known-display-sizes');
 			var minSizeHeight = Y.one('#<portlet:namespace/><%= SimpleRuleHandler.PROPERTY_DISPLAY_HEIGHT_MIN %>');
 			var minSizeWidth = Y.one('#<portlet:namespace/><%= SimpleRuleHandler.PROPERTY_DISPLAY_WIDTH_MIN %>');
 
