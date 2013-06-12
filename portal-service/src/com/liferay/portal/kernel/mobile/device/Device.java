@@ -54,8 +54,8 @@ public interface Device extends Serializable {
 
 	public boolean hasQwertyKeyboard();
 
-	public boolean isTablet();
+	public boolean isDualOrientationSupported();
 
-	public boolean supportsDualOrientation();
+	public boolean isTablet();
 
 }

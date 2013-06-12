@@ -98,12 +98,12 @@ public class UnknownDevice extends AbstractDevice {
 	}
 
 	@Override
-	public boolean isTablet() {
+	public boolean isDualOrientationSupported() {
 		return false;
 	}
 
 	@Override
-	public boolean supportsDualOrientation() {
+	public boolean isTablet() {
 		return false;
 	}
 
