@@ -35,20 +35,20 @@ import java.util.Collections;
  */
 public class SimpleRuleHandler implements RuleHandler {
 
-	public static final String PROPERTY_DISPLAY_MAX_HEIGHT =
+	public static final String PROPERTY_DISPLAY_HEIGHT_MAX =
 		"display_height_max";
-	public static final String PROPERTY_DISPLAY_MAX_WIDTH = "display_width_max";
-	public static final String PROPERTY_DISPLAY_MIN_HEIGHT =
+	public static final String PROPERTY_DISPLAY_WIDTH_MAX = "display_width_max";
+	public static final String PROPERTY_DISPLAY_HEIGHT_MIN =
 		"display_height_min";
-	public static final String PROPERTY_DISPLAY_MIN_WIDTH = "display_width_min";
+	public static final String PROPERTY_DISPLAY_WIDTH_MIN = "display_width_min";
 	public static final String PROPERTY_OS = "os";
-	public static final String PROPERTY_RESOLUTION_MAX_HEIGHT =
+	public static final String PROPERTY_RESOLUTION_HEIGHT_MAX =
 		"resolution_height_max";
-	public static final String PROPERTY_RESOLUTION_MAX_WIDTH =
+	public static final String PROPERTY_RESOLUTION_WIDTH_MAX =
 		"resolution_width_max";
-	public static final String PROPERTY_RESOLUTION_MIN_HEIGHT =
+	public static final String PROPERTY_RESOLUTION_HEIGHT_MIN =
 		"resolution_height_min";
-	public static final String PROPERTY_RESOLUTION_MIN_WIDTH =
+	public static final String PROPERTY_RESOLUTION_WIDTH_MIN =
 		"resolution_width_min";
 	public static final String PROPERTY_TABLET = "tablet";
 
@@ -91,16 +91,16 @@ public class SimpleRuleHandler implements RuleHandler {
 
 		if (!isAllowedValue(
 				displaySize.getHeight(),
-				typeSettingsProperties.get(PROPERTY_DISPLAY_MIN_HEIGHT),
-				typeSettingsProperties.get(PROPERTY_DISPLAY_MAX_HEIGHT))) {
+				typeSettingsProperties.get(PROPERTY_DISPLAY_HEIGHT_MIN),
+				typeSettingsProperties.get(PROPERTY_DISPLAY_HEIGHT_MAX))) {
 
 			return false;
 		}
 
 		if (!isAllowedValue(
 				displaySize.getWidth(),
-				typeSettingsProperties.get(PROPERTY_DISPLAY_MIN_WIDTH),
-				typeSettingsProperties.get(PROPERTY_DISPLAY_MAX_WIDTH))) {
+				typeSettingsProperties.get(PROPERTY_DISPLAY_WIDTH_MIN),
+				typeSettingsProperties.get(PROPERTY_DISPLAY_WIDTH_MAX))) {
 
 			return false;
 		}
@@ -109,16 +109,16 @@ public class SimpleRuleHandler implements RuleHandler {
 
 		if (!isAllowedValue(
 				resolution.getHeight(),
-				typeSettingsProperties.get(PROPERTY_RESOLUTION_MIN_HEIGHT),
-				typeSettingsProperties.get(PROPERTY_RESOLUTION_MAX_HEIGHT))) {
+				typeSettingsProperties.get(PROPERTY_RESOLUTION_HEIGHT_MIN),
+				typeSettingsProperties.get(PROPERTY_RESOLUTION_HEIGHT_MAX))) {
 
 			return false;
 		}
 
 		if (!isAllowedValue(
 				resolution.getWidth(),
-				typeSettingsProperties.get(PROPERTY_RESOLUTION_MIN_WIDTH),
-				typeSettingsProperties.get(PROPERTY_RESOLUTION_MAX_WIDTH))) {
+				typeSettingsProperties.get(PROPERTY_RESOLUTION_WIDTH_MIN),
+				typeSettingsProperties.get(PROPERTY_RESOLUTION_WIDTH_MAX))) {
 
 			return false;
 		}
@@ -166,14 +166,14 @@ public class SimpleRuleHandler implements RuleHandler {
 		_propertyNames = new ArrayList<String>(10);
 
 		_propertyNames.add(PROPERTY_OS);
-		_propertyNames.add(PROPERTY_DISPLAY_MAX_WIDTH);
-		_propertyNames.add(PROPERTY_DISPLAY_MIN_WIDTH);
-		_propertyNames.add(PROPERTY_DISPLAY_MAX_HEIGHT);
-		_propertyNames.add(PROPERTY_DISPLAY_MIN_HEIGHT);
-		_propertyNames.add(PROPERTY_RESOLUTION_MAX_WIDTH);
-		_propertyNames.add(PROPERTY_RESOLUTION_MIN_WIDTH);
-		_propertyNames.add(PROPERTY_RESOLUTION_MAX_HEIGHT);
-		_propertyNames.add(PROPERTY_RESOLUTION_MIN_HEIGHT);
+		_propertyNames.add(PROPERTY_DISPLAY_WIDTH_MAX);
+		_propertyNames.add(PROPERTY_DISPLAY_WIDTH_MIN);
+		_propertyNames.add(PROPERTY_DISPLAY_HEIGHT_MAX);
+		_propertyNames.add(PROPERTY_DISPLAY_HEIGHT_MIN);
+		_propertyNames.add(PROPERTY_RESOLUTION_WIDTH_MAX);
+		_propertyNames.add(PROPERTY_RESOLUTION_WIDTH_MIN);
+		_propertyNames.add(PROPERTY_RESOLUTION_HEIGHT_MAX);
+		_propertyNames.add(PROPERTY_RESOLUTION_HEIGHT_MIN);
 		_propertyNames.add(PROPERTY_TABLET);
 
 		_propertyNames = Collections.unmodifiableCollection(_propertyNames);

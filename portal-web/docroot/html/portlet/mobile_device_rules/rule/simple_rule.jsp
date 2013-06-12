@@ -20,15 +20,17 @@
 MDRRule rule = (MDRRule)request.getAttribute(WebKeys.MOBILE_DEVICE_RULES_RULE);
 
 Set<String> operatingSystems = Collections.emptySet();
+
 int tablet = 0;
-String maxDisplayHeight = StringPool.BLANK;
-String maxDisplayWidth = StringPool.BLANK;
-String maxResolutionHeight = StringPool.BLANK;
-String maxResolutionWidth = StringPool.BLANK;
-String minDisplayHeight = StringPool.BLANK;
-String minDisplayWidth = StringPool.BLANK;
-String minResolutionHeight = StringPool.BLANK;
-String minResolutionWidth = StringPool.BLANK;
+
+String displayHeightMax = StringPool.BLANK;
+String displayWidthMax = StringPool.BLANK;
+String resolutionHeightMax = StringPool.BLANK;
+String resolutionWidthMax = StringPool.BLANK;
+String displayHeightMin = StringPool.BLANK;
+String displayWidthMin = StringPool.BLANK;
+String resolutionHeightMin = StringPool.BLANK;
+String resolutionWidthMin = StringPool.BLANK;
 
 if (rule != null) {
 	UnicodeProperties typeSettingsProperties = rule.getTypeSettingsProperties();
@@ -44,14 +46,14 @@ if (rule != null) {
 		tablet = 2;
 	}
 
-	maxDisplayHeight = GetterUtil.getString(typeSettingsProperties.get(SimpleRuleHandler.PROPERTY_DISPLAY_MAX_HEIGHT));
-	maxDisplayWidth = GetterUtil.getString(typeSettingsProperties.get(SimpleRuleHandler.PROPERTY_DISPLAY_MAX_WIDTH));
-	maxResolutionHeight = GetterUtil.getString(typeSettingsProperties.get(SimpleRuleHandler.PROPERTY_RESOLUTION_MAX_HEIGHT));
-	maxResolutionWidth = GetterUtil.getString(typeSettingsProperties.get(SimpleRuleHandler.PROPERTY_RESOLUTION_MAX_WIDTH));
-	minDisplayHeight = GetterUtil.getString(typeSettingsProperties.get(SimpleRuleHandler.PROPERTY_DISPLAY_MIN_HEIGHT));
-	minDisplayWidth = GetterUtil.getString(typeSettingsProperties.get(SimpleRuleHandler.PROPERTY_DISPLAY_MIN_WIDTH));
-	minResolutionHeight = GetterUtil.getString(typeSettingsProperties.get(SimpleRuleHandler.PROPERTY_RESOLUTION_MIN_HEIGHT));
-	minResolutionWidth = GetterUtil.getString(typeSettingsProperties.get(SimpleRuleHandler.PROPERTY_RESOLUTION_MIN_WIDTH));
+	displayHeightMax = GetterUtil.getString(typeSettingsProperties.get(SimpleRuleHandler.PROPERTY_DISPLAY_HEIGHT_MAX));
+	displayWidthMax = GetterUtil.getString(typeSettingsProperties.get(SimpleRuleHandler.PROPERTY_DISPLAY_WIDTH_MAX));
+	resolutionHeightMax = GetterUtil.getString(typeSettingsProperties.get(SimpleRuleHandler.PROPERTY_RESOLUTION_HEIGHT_MAX));
+	resolutionWidthMax = GetterUtil.getString(typeSettingsProperties.get(SimpleRuleHandler.PROPERTY_RESOLUTION_WIDTH_MAX));
+	displayHeightMin = GetterUtil.getString(typeSettingsProperties.get(SimpleRuleHandler.PROPERTY_DISPLAY_HEIGHT_MIN));
+	displayWidthMin = GetterUtil.getString(typeSettingsProperties.get(SimpleRuleHandler.PROPERTY_DISPLAY_WIDTH_MIN));
+	resolutionHeightMin = GetterUtil.getString(typeSettingsProperties.get(SimpleRuleHandler.PROPERTY_RESOLUTION_HEIGHT_MIN));
+	resolutionWidthMin = GetterUtil.getString(typeSettingsProperties.get(SimpleRuleHandler.PROPERTY_RESOLUTION_WIDTH_MIN));
 }
 
 Set<Dimensions> knownDisplaySizes = DeviceDetectionUtil.getKnownDisplaySizes();
@@ -92,21 +94,21 @@ Set<Dimensions> knownScreenResolutions = DeviceDetectionUtil.getKnownScreenResol
 
 	<aui:input
 		cssClass="custom-min-display-field aui-field-digits"
-		id="<%= SimpleRuleHandler.PROPERTY_DISPLAY_MIN_WIDTH %>"
+		id="<%= SimpleRuleHandler.PROPERTY_DISPLAY_WIDTH_MIN %>"
 		inlineField="<%= true %>"
 		label="width"
-		name="<%= SimpleRuleHandler.PROPERTY_DISPLAY_MIN_WIDTH %>"
+		name="<%= SimpleRuleHandler.PROPERTY_DISPLAY_WIDTH_MIN %>"
 		style="max-width:50px;"
-		value="<%= minDisplayWidth %>" />
+		value="<%= displayWidthMin %>" />
 	<%= _SEPARATOR %>
 	<aui:input
 		cssClass="custom-min-display-field aui-field-digits"
-		id="<%= SimpleRuleHandler.PROPERTY_DISPLAY_MIN_HEIGHT %>"
+		id="<%= SimpleRuleHandler.PROPERTY_DISPLAY_HEIGHT_MIN %>"
 		inlineField="<%= true %>"
 		label="height"
-		name="<%= SimpleRuleHandler.PROPERTY_DISPLAY_MIN_HEIGHT %>"
+		name="<%= SimpleRuleHandler.PROPERTY_DISPLAY_HEIGHT_MIN %>"
 		style="max-width:50px;"
-		value="<%= minDisplayHeight %>" />
+		value="<%= displayHeightMin %>" />
 
 	(
 	<aui:select
@@ -140,21 +142,21 @@ Set<Dimensions> knownScreenResolutions = DeviceDetectionUtil.getKnownScreenResol
 
 	<aui:input
 		cssClass="custom-max-display-field aui-field-digits"
-		id="<%= SimpleRuleHandler.PROPERTY_DISPLAY_MAX_WIDTH %>"
+		id="<%= SimpleRuleHandler.PROPERTY_DISPLAY_WIDTH_MAX %>"
 		inlineField="<%= true %>"
 		label="width"
-		name="<%= SimpleRuleHandler.PROPERTY_DISPLAY_MAX_WIDTH %>"
+		name="<%= SimpleRuleHandler.PROPERTY_DISPLAY_WIDTH_MAX %>"
 		style="max-width:50px;"
-		value="<%= maxDisplayWidth %>" />
+		value="<%= displayWidthMax %>" />
 	<%= _SEPARATOR %>
 	<aui:input
 		cssClass="custom-max-display-field aui-field-digits"
-		id="<%= SimpleRuleHandler.PROPERTY_DISPLAY_MAX_HEIGHT %>"
+		id="<%= SimpleRuleHandler.PROPERTY_DISPLAY_HEIGHT_MAX %>"
 		inlineField="<%= true %>"
 		label="height"
-		name="<%= SimpleRuleHandler.PROPERTY_DISPLAY_MAX_HEIGHT %>"
+		name="<%= SimpleRuleHandler.PROPERTY_DISPLAY_HEIGHT_MAX %>"
 		style="max-width:50px;"
-		value="<%= maxDisplayHeight %>" />
+		value="<%= displayHeightMax %>" />
 
 	(
 	<aui:select
@@ -190,21 +192,21 @@ Set<Dimensions> knownScreenResolutions = DeviceDetectionUtil.getKnownScreenResol
 
 	<aui:input
 		cssClass="custom-min-resolution-field aui-field-digits"
-		id="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_MIN_WIDTH %>"
+		id="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_WIDTH_MIN %>"
 		inlineField="<%= true %>"
 		label="width"
-		name="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_MIN_WIDTH %>"
+		name="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_WIDTH_MIN %>"
 		style="max-width:50px;"
-		value="<%= minResolutionWidth %>" />
+		value="<%= resolutionWidthMin %>" />
 	<%= _SEPARATOR %>
 	<aui:input
 		cssClass="custom-min-resolution-field aui-field-digits"
-		id="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_MIN_HEIGHT %>"
+		id="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_HEIGHT_MIN %>"
 		inlineField="<%= true %>"
 		label="height"
-		name="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_MIN_HEIGHT %>"
+		name="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_HEIGHT_MIN %>"
 		style="max-width:50px;"
-		value="<%= minResolutionHeight %>" />
+		value="<%= resolutionHeightMin %>" />
 
 	(
 	<aui:select
@@ -239,21 +241,21 @@ Set<Dimensions> knownScreenResolutions = DeviceDetectionUtil.getKnownScreenResol
 
 	<aui:input
 		cssClass="custom-max-resolution-field aui-field-digits"
-		id="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_MAX_WIDTH %>"
+		id="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_WIDTH_MAX %>"
 		inlineField="<%= true %>"
 		label="width"
-		name="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_MAX_WIDTH %>"
+		name="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_WIDTH_MAX %>"
 		style="max-width:50px;"
-		value="<%= maxResolutionWidth %>" />
+		value="<%= resolutionWidthMax %>" />
 	<%= _SEPARATOR %>
 	<aui:input
 		cssClass="custom-max-resolution-field aui-field-digits"
-		id="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_MAX_HEIGHT %>"
+		id="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_HEIGHT_MAX %>"
 		inlineField="<%= true %>"
 		label="height"
-		name="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_MAX_HEIGHT %>"
+		name="<%= SimpleRuleHandler.PROPERTY_RESOLUTION_HEIGHT_MAX %>"
 		style="max-width:50px;"
-		value="<%= maxResolutionHeight %>" />
+		value="<%= resolutionHeightMax %>" />
 
 	(
 	<aui:select
@@ -288,20 +290,20 @@ Set<Dimensions> knownScreenResolutions = DeviceDetectionUtil.getKnownScreenResol
 		'aui-node',
 		function(Y) {
 			var maxKnownSizes = Y.one('#<portlet:namespace/>max-known-dispay-sizes');
-			var maxSizeHeight = Y.one('#<portlet:namespace/><%= SimpleRuleHandler.PROPERTY_DISPLAY_MAX_HEIGHT %>');
-			var maxSizeWidth = Y.one('#<portlet:namespace/><%= SimpleRuleHandler.PROPERTY_DISPLAY_MAX_WIDTH %>');
+			var maxSizeHeight = Y.one('#<portlet:namespace/><%= SimpleRuleHandler.PROPERTY_DISPLAY_HEIGHT_MAX %>');
+			var maxSizeWidth = Y.one('#<portlet:namespace/><%= SimpleRuleHandler.PROPERTY_DISPLAY_WIDTH_MAX %>');
 
 			var minKnownSizes = Y.one('#<portlet:namespace/>min-known-dispay-sizes');
-			var minSizeHeight = Y.one('#<portlet:namespace/><%= SimpleRuleHandler.PROPERTY_DISPLAY_MIN_HEIGHT %>');
-			var minSizeWidth = Y.one('#<portlet:namespace/><%= SimpleRuleHandler.PROPERTY_DISPLAY_MIN_WIDTH %>');
+			var minSizeHeight = Y.one('#<portlet:namespace/><%= SimpleRuleHandler.PROPERTY_DISPLAY_HEIGHT_MIN %>');
+			var minSizeWidth = Y.one('#<portlet:namespace/><%= SimpleRuleHandler.PROPERTY_DISPLAY_WIDTH_MIN %>');
 
 			var maxKnownResolutions = Y.one('#<portlet:namespace/>max-known-screen-resolutions');
-			var maxResWidth = Y.one('#<portlet:namespace/><%= SimpleRuleHandler.PROPERTY_RESOLUTION_MAX_WIDTH %>');
-			var maxResHeight = Y.one('#<portlet:namespace/><%= SimpleRuleHandler.PROPERTY_RESOLUTION_MAX_HEIGHT %>');
+			var maxResWidth = Y.one('#<portlet:namespace/><%= SimpleRuleHandler.PROPERTY_RESOLUTION_WIDTH_MAX %>');
+			var maxResHeight = Y.one('#<portlet:namespace/><%= SimpleRuleHandler.PROPERTY_RESOLUTION_HEIGHT_MAX %>');
 
 			var minKnownResolutions = Y.one('#<portlet:namespace/>min-known-screen-resolutions');
-			var minResWidth = Y.one('#<portlet:namespace/><%= SimpleRuleHandler.PROPERTY_RESOLUTION_MIN_WIDTH %>');
-			var minResHeight = Y.one('#<portlet:namespace/><%= SimpleRuleHandler.PROPERTY_RESOLUTION_MIN_HEIGHT %>');
+			var minResWidth = Y.one('#<portlet:namespace/><%= SimpleRuleHandler.PROPERTY_RESOLUTION_WIDTH_MIN %>');
+			var minResHeight = Y.one('#<portlet:namespace/><%= SimpleRuleHandler.PROPERTY_RESOLUTION_HEIGHT_MIN %>');
 
 			maxKnownSizes.on(
 			    'change',
