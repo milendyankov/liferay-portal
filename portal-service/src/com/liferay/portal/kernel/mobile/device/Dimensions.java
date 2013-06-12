@@ -19,23 +19,78 @@ import com.liferay.portal.kernel.util.StringBundler;
 import java.io.Serializable;
 
 /**
+ * @author Milen Dyankov
  * @author Michael C. Han
  */
-public class Dimensions implements Serializable {
+public class Dimensions implements Serializable, Comparable<Dimensions> {
 
 	public static final Dimensions UNKNOWN = new Dimensions(-1, -1);
 
-	public Dimensions(float height, float width) {
+	public Dimensions(int height, int width) {
+
 		_height = height;
 		_width = width;
 	}
 
-	public float getHeight() {
+	@Override
+	public int compareTo(Dimensions dimensions) {
+		if (_width != dimensions.getWidth()) {
+			return _width - dimensions.getWidth();
+		}
+		else {
+			if (_height != dimensions.getHeight()) {
+				return _height - dimensions.getHeight();
+			}
+			else {
+				return 0;
+			}
+		}
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (obj == null) {
+			return false;
+		}
+
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+
+		Dimensions dimensions = (Dimensions)obj;
+
+		if (_height != dimensions._height) {
+			return false;
+		}
+
+		if (_width != dimensions._width) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public int getHeight() {
 		return _height;
 	}
 
-	public float getWidth() {
+	public int getWidth() {
 		return _width;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+
+		result = prime * result + _height;
+		result = prime * result + _width;
+
+		return result;
 	}
 
 	@Override
@@ -51,7 +106,7 @@ public class Dimensions implements Serializable {
 		return sb.toString();
 	}
 
-	private float _height;
-	private float _width;
+	private int _height;
+	private int _width;
 
 }
