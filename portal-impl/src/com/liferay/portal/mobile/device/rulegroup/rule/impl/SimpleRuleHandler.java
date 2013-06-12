@@ -37,19 +37,22 @@ public class SimpleRuleHandler implements RuleHandler {
 
 	public static final String PROPERTY_DISPLAY_HEIGHT_MAX =
 		"display_height_max";
-	public static final String PROPERTY_DISPLAY_WIDTH_MAX = "display_width_max";
 	public static final String PROPERTY_DISPLAY_HEIGHT_MIN =
 		"display_height_min";
+	public static final String PROPERTY_DISPLAY_WIDTH_MAX = "display_width_max";
 	public static final String PROPERTY_DISPLAY_WIDTH_MIN = "display_width_min";
+
 	public static final String PROPERTY_OS = "os";
+
 	public static final String PROPERTY_RESOLUTION_HEIGHT_MAX =
 		"resolution_height_max";
-	public static final String PROPERTY_RESOLUTION_WIDTH_MAX =
-		"resolution_width_max";
 	public static final String PROPERTY_RESOLUTION_HEIGHT_MIN =
 		"resolution_height_min";
+	public static final String PROPERTY_RESOLUTION_WIDTH_MAX =
+		"resolution_width_max";
 	public static final String PROPERTY_RESOLUTION_WIDTH_MIN =
 		"resolution_width_min";
+
 	public static final String PROPERTY_TABLET = "tablet";
 
 	public static String getHandlerType() {

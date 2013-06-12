@@ -24,12 +24,13 @@ Set<String> operatingSystems = Collections.emptySet();
 int tablet = 0;
 
 String displayHeightMax = StringPool.BLANK;
-String displayWidthMax = StringPool.BLANK;
-String resolutionHeightMax = StringPool.BLANK;
-String resolutionWidthMax = StringPool.BLANK;
 String displayHeightMin = StringPool.BLANK;
+String displayWidthMax = StringPool.BLANK;
 String displayWidthMin = StringPool.BLANK;
+
+String resolutionHeightMax = StringPool.BLANK;
 String resolutionHeightMin = StringPool.BLANK;
+String resolutionWidthMax = StringPool.BLANK;
 String resolutionWidthMin = StringPool.BLANK;
 
 if (rule != null) {
@@ -47,12 +48,13 @@ if (rule != null) {
 	}
 
 	displayHeightMax = GetterUtil.getString(typeSettingsProperties.get(SimpleRuleHandler.PROPERTY_DISPLAY_HEIGHT_MAX));
-	displayWidthMax = GetterUtil.getString(typeSettingsProperties.get(SimpleRuleHandler.PROPERTY_DISPLAY_WIDTH_MAX));
-	resolutionHeightMax = GetterUtil.getString(typeSettingsProperties.get(SimpleRuleHandler.PROPERTY_RESOLUTION_HEIGHT_MAX));
-	resolutionWidthMax = GetterUtil.getString(typeSettingsProperties.get(SimpleRuleHandler.PROPERTY_RESOLUTION_WIDTH_MAX));
 	displayHeightMin = GetterUtil.getString(typeSettingsProperties.get(SimpleRuleHandler.PROPERTY_DISPLAY_HEIGHT_MIN));
+	displayWidthMax = GetterUtil.getString(typeSettingsProperties.get(SimpleRuleHandler.PROPERTY_DISPLAY_WIDTH_MAX));
 	displayWidthMin = GetterUtil.getString(typeSettingsProperties.get(SimpleRuleHandler.PROPERTY_DISPLAY_WIDTH_MIN));
+
+	resolutionHeightMax = GetterUtil.getString(typeSettingsProperties.get(SimpleRuleHandler.PROPERTY_RESOLUTION_HEIGHT_MAX));
 	resolutionHeightMin = GetterUtil.getString(typeSettingsProperties.get(SimpleRuleHandler.PROPERTY_RESOLUTION_HEIGHT_MIN));
+	resolutionWidthMax = GetterUtil.getString(typeSettingsProperties.get(SimpleRuleHandler.PROPERTY_RESOLUTION_WIDTH_MAX));
 	resolutionWidthMin = GetterUtil.getString(typeSettingsProperties.get(SimpleRuleHandler.PROPERTY_RESOLUTION_WIDTH_MIN));
 }
 
