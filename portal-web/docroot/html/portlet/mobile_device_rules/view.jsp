@@ -26,6 +26,8 @@ PortletURL portletURL = renderResponse.createRenderURL();
 portletURL.setParameter("struts_action", "/mobile_device_rules/view");
 portletURL.setParameter("groupId", String.valueOf(groupId));
 portletURL.setParameter("chooseCallback", chooseCallback);
+
+String toolbarItem = ParamUtil.getString(request, "toolbarItem", "view-all");
 %>
 
 <c:if test="<%= Validator.isNotNull(chooseCallback) %>">
@@ -58,6 +60,8 @@ portletURL.setParameter("chooseCallback", chooseCallback);
 
 			<aui:nav-bar>
 				<aui:nav>
+					<aui:nav-item href="<%= viewRulesURL %>" label="view-all" selected='<%= toolbarItem.equals("view-all") %>' />
+
 					<aui:nav-item href="<%= addRuleGroupURL %>" iconClass="icon-plus" label="add-device-family" />
 				</aui:nav>
 
