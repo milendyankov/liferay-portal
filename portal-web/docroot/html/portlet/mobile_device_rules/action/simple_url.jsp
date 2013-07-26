@@ -24,7 +24,8 @@ String url = GetterUtil.getString(typeSettingsProperties.get("url"));
 	<aui:validator name="required" />
 </aui:input>
 
-<script id="<portlet:namespace />filedsValidationScript">
+<aui:script position="inline">
+	alert('aqq');
 	Liferay.provide(
 		window,
 		'<portlet:namespace />updateFiledsValidation',
@@ -33,4 +34,4 @@ String url = GetterUtil.getString(typeSettingsProperties.get("url"));
 		},
 		[]
 	);
-</script>
+</aui:script>

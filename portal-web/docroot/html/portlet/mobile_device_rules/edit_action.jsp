@@ -164,19 +164,15 @@ else {
 							var typeSettings = A.one('#<portlet:namespace />typeSettings');
 
 							if (typeSettings) {
-								typeSettings.html(this.get('responseData'));
-								
-								var filedsValidationScript = A.one('#<portlet:namespace />filedsValidationScript');
-								if (filedsValidationScript) {
-									var code = filedsValidationScript.text() + ' <portlet:namespace />updateFiledsValidation();';
-									eval(code);
-								}
+								typeSettings.plug(A.Plugin.ParseContent);
+								typeSettings.setContent(this.get('responseData'));
+								<portlet:namespace />updateFiledsValidation();
 							}
 						}
 					}
 				}
 			);
 		},
-		['aui-io']
+		['aui-io', 'aui-parse-content']
 	);
 </aui:script>
