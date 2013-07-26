@@ -24,14 +24,12 @@ String url = GetterUtil.getString(typeSettingsProperties.get("url"));
 	<aui:validator name="required" />
 </aui:input>
 
-<aui:script position="inline">
-	alert('aqq');
-	Liferay.provide(
-		window,
-		'<portlet:namespace />updateFiledsValidation',
-		function() {
-			Liferay.Form.get('<portlet:namespace />fm').formValidator.get('rules')['<portlet:namespace />url'] = {"required": true, "custom": false};
-		},
-		[]
-	);
+<aui:script>
+	if (Liferay.Form) {
+		var rules = Liferay.Form.get('<portlet:namespace />fm').formValidator.get('rules');
+		var fieldName = '<portlet:namespace />url';
+		if (!(fieldName in rules)){
+			rules[fieldName] = {"required": true, "custom": false};
+		}
+	}
 </aui:script>

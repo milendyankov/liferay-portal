@@ -166,7 +166,6 @@ else {
 							if (typeSettings) {
 								typeSettings.plug(A.Plugin.ParseContent);
 								typeSettings.setContent(this.get('responseData'));
-								<portlet:namespace />updateFiledsValidation();
 							}
 						}
 					}
