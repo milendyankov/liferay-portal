@@ -165,6 +165,12 @@ else {
 
 							if (typeSettings) {
 								typeSettings.html(this.get('responseData'));
+								
+								var filedsValidationScript = A.one('#<portlet:namespace />filedsValidationScript');
+								if (filedsValidationScript) {
+									var code = filedsValidationScript.text() + ' <portlet:namespace />updateFiledsValidation();';
+									eval(code);
+								}
 							}
 						}
 					}

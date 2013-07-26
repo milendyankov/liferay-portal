@@ -20,4 +20,17 @@
 String url = GetterUtil.getString(typeSettingsProperties.get("url"));
 %>
 
-<aui:input cssClass="lfr-input-text-container" name="url" type="text" value="<%= url %>" />
+<aui:input cssClass="lfr-input-text-container" name="url" type="text" value="<%= url %>">
+	<aui:validator name="required" />
+</aui:input>
+
+<script id="<portlet:namespace />filedsValidationScript">
+	Liferay.provide(
+		window,
+		'<portlet:namespace />updateFiledsValidation',
+		function() {
+			Liferay.Form.get('<portlet:namespace />fm').formValidator.get('rules')['<portlet:namespace />url'] = {"required": true, "custom": false};
+		},
+		[]
+	);
+</script>
