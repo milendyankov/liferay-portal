@@ -19,6 +19,7 @@
 <%
 User selUser = (User)request.getAttribute("user.selUser");
 List<Group> groups = (List<Group>)request.getAttribute("user.groups");
+List<Group> inheritedSites = (List<Group>)request.getAttribute("user.inheritedSites");
 List<Organization> organizations = (List<Organization>)request.getAttribute("user.organizations");
 Long[] organizationIds = UsersAdminUtil.getOrganizationIds(organizations);
 List<Role> roles = (List<Role>)request.getAttribute("user.roles");
@@ -288,7 +289,7 @@ for (Group group : allGroups) {
 <h3><liferay-ui:message key="site-roles" /></h3>
 
 <c:choose>
-	<c:when test="<%= groups.isEmpty() %>">
+	<c:when test="<%= groups.isEmpty() && inheritedSites.isEmpty() %>">
 		<liferay-ui:message key="this-user-does-not-belong-to-a-site-to-which-a-site-role-can-be-assigned" />
 	</c:when>
 	<c:otherwise>
@@ -474,10 +475,10 @@ for (Group group : allGroups) {
 
 			var rowColumns = [];
 
-			rowColumns.push(A.Escape.html(name));
+			rowColumns.push(name);
 
 			if (groupName) {
-				rowColumns.push(A.Escape.html(groupName));
+				rowColumns.push(groupName);
 			}
 
 			if (groupId) {
@@ -496,7 +497,7 @@ for (Group group : allGroups) {
 			searchContainer.addRow(rowColumns, roleId);
 			searchContainer.updateDataStore();
 		},
-		['liferay-search-container', 'escape']
+		['liferay-search-container']
 	);
 </aui:script>
 
