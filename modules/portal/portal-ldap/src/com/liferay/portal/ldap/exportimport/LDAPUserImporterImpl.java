@@ -38,7 +38,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.ldap.configuration.LDAPConfiguration;
+import com.liferay.portal.ldap.configuration.LDAPIntegrationConfiguration;
 import com.liferay.portal.model.Company;
 import com.liferay.portal.model.CompanyConstants;
 import com.liferay.portal.model.Contact;
@@ -106,7 +106,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Hugo Huijser
  */
 @Component(
-	configurationPid = "com.liferay.portal.ldap.configuration.LDAPConfiguration",
+	configurationPid = "com.liferay.portal.ldap.configuration.LDAPIntegrationConfiguration",
 	immediate = true,
 	service = {LDAPUserImporter.class, UserImporter.class}
 )
@@ -488,7 +488,7 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 	@Modified
 	protected void activate(Map<String, Object> properties) {
 		_ldapConfiguration = Configurable.createConfigurable(
-			LDAPConfiguration.class, properties);
+			LDAPIntegrationConfiguration.class, properties);
 
 		_ldapUserIgnoreAttributes = SetUtil.fromArray(
 			_ldapConfiguration.userIgnoreAttributes());
@@ -1390,7 +1390,7 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 
 	private AttributesTransformer _attributesTransformer;
 	private long _lastImportTime;
-	private volatile LDAPConfiguration _ldapConfiguration;
+	private volatile LDAPIntegrationConfiguration _ldapConfiguration;
 	private LDAPToPortalConverter _ldapToPortalConverter;
 	private Set<String> _ldapUserIgnoreAttributes;
 	private PortalCache<String, Long> _portalCache;

@@ -31,7 +31,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.ldap.configuration.LDAPConfiguration;
+import com.liferay.portal.ldap.configuration.LDAPIntegrationConfiguration;
 import com.liferay.portal.ldap.exportimport.UserImportTransactionThreadLocal;
 import com.liferay.portal.model.CompanyConstants;
 import com.liferay.portal.security.ldap.LDAPSettingsUtil;
@@ -78,7 +78,7 @@ import org.osgi.service.component.annotations.Modified;
  * @author Edward Han
  */
 @Component(
-	configurationPid = "com.liferay.portal.ldap.configuration.LDAPConfiguration",
+	configurationPid = "com.liferay.portal.ldap.configuration.LDAPIntegrationConfiguration",
 	immediate = true, service = PortalLDAP.class
 )
 public class DefaultPortalLDAP implements PortalLDAP {
@@ -902,7 +902,7 @@ public class DefaultPortalLDAP implements PortalLDAP {
 	@Modified
 	protected void activate(Map<String, Object> properties) {
 		_ldapConfiguration = Configurable.createConfigurable(
-			LDAPConfiguration.class, properties);
+			LDAPIntegrationConfiguration.class, properties);
 	}
 
 	private Attributes _getAttributes(
@@ -1018,6 +1018,6 @@ public class DefaultPortalLDAP implements PortalLDAP {
 	private static final Log _log = LogFactoryUtil.getLog(
 		DefaultPortalLDAP.class);
 
-	private volatile LDAPConfiguration _ldapConfiguration;
+	private volatile LDAPIntegrationConfiguration _ldapConfiguration;
 
 }
