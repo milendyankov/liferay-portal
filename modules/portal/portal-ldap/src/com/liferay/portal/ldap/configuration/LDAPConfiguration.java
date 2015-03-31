@@ -52,7 +52,10 @@ public interface LDAPConfiguration {
 	@Meta.AD(deflt = "86400000", required = false)
 	public long importLockExpirationTime();
 
-	@Meta.AD(deflt = "user", optionValues = {"group", "user"}, required = false)
+	@Meta.AD(
+		deflt = "user", 
+//		optionValues = {"group", "user"}, 
+		required = false)
 	public String importMethod();
 
 	@Meta.AD(deflt = "false", required = false)
@@ -77,7 +80,8 @@ public interface LDAPConfiguration {
 	public int rangeSize();
 
 	@Meta.AD(
-		deflt = "follow", optionValues = {"follow", "ingore", "throws"},
+		deflt = "follow", 
+//		optionValues = {"follow", "ingore", "throws"},
 		required = false
 	)
 	public String referral();
