@@ -20,11 +20,15 @@ import aQute.bnd.annotation.metatype.Meta;
  * @author Michael C. Han
  */
 @Meta.OCD(
+	factory=true,
 	id = "com.liferay.portal.ldap.configuration.LDAPIntegrationConfiguration",
 	localization = "content.Language"
 )
 public interface LDAPIntegrationConfiguration {
 
+	@Meta.AD(deflt = "-1", required = true)
+	public int companyId();
+	
 	@Meta.AD(deflt = "false", required = false)
 	public boolean exportEnabled();
 
