@@ -18,5 +18,6 @@
 
 	<dependencies defaultconf="default">
 		<dependency name="org.eclipse.osgi.services" org="org.eclipse.osgi" rev="3.5.0-SNAPSHOT" />
+		<dependency name="org.eclipse.equinox.metatype" org="org.eclipse.equinox" rev="1.4.100-SNAPSHOT" />
 	</dependencies>
 </ivy-module>
