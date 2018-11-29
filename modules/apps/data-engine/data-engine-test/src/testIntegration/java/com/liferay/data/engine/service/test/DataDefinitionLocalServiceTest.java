@@ -17,8 +17,8 @@ package com.liferay.data.engine.service.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.data.engine.exception.DataDefinitionException;
 import com.liferay.data.engine.model.DataDefinition;
-import com.liferay.data.engine.model.DataDefinitionColumn;
 import com.liferay.data.engine.model.DataDefinitionColumnType;
+import com.liferay.data.engine.model.DataDefinitionField;
 import com.liferay.data.engine.service.DataDefinitionDeleteRequest;
 import com.liferay.data.engine.service.DataDefinitionGetRequest;
 import com.liferay.data.engine.service.DataDefinitionGetResponse;
@@ -83,15 +83,15 @@ public class DataDefinitionLocalServiceTest {
 			}
 		};
 
-		DataDefinitionColumn dataDefinitionColumn =
-			DataDefinitionColumn.Builder.newBuilder(
+		DataDefinitionField dataDefinitionField =
+			DataDefinitionField.Builder.newBuilder(
 				"name", DataDefinitionColumnType.STRING
 			).label(
 				expectedNameLabels
 			).build();
 
 		DataDefinition dataDefinition = DataDefinition.Builder.newBuilder(
-			Arrays.asList(dataDefinitionColumn)
+			Arrays.asList(dataDefinitionField)
 		).name(
 			LocaleUtil.US, "Definition 1"
 		).storageType(
@@ -138,8 +138,8 @@ public class DataDefinitionLocalServiceTest {
 			}
 		};
 
-		DataDefinitionColumn dataDefinitionColumn1 =
-			DataDefinitionColumn.Builder.newBuilder(
+		DataDefinitionField dataDefinitionField1 =
+			DataDefinitionField.Builder.newBuilder(
 				"column1", DataDefinitionColumnType.STRING
 			).label(
 				column1Labels
@@ -151,8 +151,8 @@ public class DataDefinitionLocalServiceTest {
 			}
 		};
 
-		DataDefinitionColumn dataDefinitionColumn2 =
-			DataDefinitionColumn.Builder.newBuilder(
+		DataDefinitionField dataDefinitionField2 =
+			DataDefinitionField.Builder.newBuilder(
 				"column2", DataDefinitionColumnType.NUMBER
 			).label(
 				column2Labels
@@ -164,8 +164,8 @@ public class DataDefinitionLocalServiceTest {
 			}
 		};
 
-		DataDefinitionColumn dataDefinitionColumn3 =
-			DataDefinitionColumn.Builder.newBuilder(
+		DataDefinitionField dataDefinitionField3 =
+			DataDefinitionField.Builder.newBuilder(
 				"column3", DataDefinitionColumnType.DATE
 			).label(
 				column3Labels
@@ -174,8 +174,8 @@ public class DataDefinitionLocalServiceTest {
 		DataDefinition expectedDataDefinition =
 			DataDefinition.Builder.newBuilder(
 				Arrays.asList(
-					dataDefinitionColumn1, dataDefinitionColumn2,
-					dataDefinitionColumn3)
+					dataDefinitionField1, dataDefinitionField2,
+					dataDefinitionField3)
 			).name(
 				LocaleUtil.US, "Definition 2"
 			).storageType(
@@ -230,8 +230,8 @@ public class DataDefinitionLocalServiceTest {
 			}
 		};
 
-		DataDefinitionColumn expectedDataDefinitionColumn1 =
-			DataDefinitionColumn.Builder.newBuilder(
+		DataDefinitionField expectedDataDefinitionField1 =
+			DataDefinitionField.Builder.newBuilder(
 				"name", DataDefinitionColumnType.STRING
 			).label(
 				expectedNameLabels
@@ -244,8 +244,8 @@ public class DataDefinitionLocalServiceTest {
 			}
 		};
 
-		DataDefinitionColumn expectedDataDefinitionColumn2 =
-			DataDefinitionColumn.Builder.newBuilder(
+		DataDefinitionField expectedDataDefinitionField2 =
+			DataDefinitionField.Builder.newBuilder(
 				"email", DataDefinitionColumnType.STRING
 			).label(
 				expectedEmailLabels
@@ -254,8 +254,7 @@ public class DataDefinitionLocalServiceTest {
 		DataDefinition expectedDataDefinition =
 			DataDefinition.Builder.newBuilder(
 				Arrays.asList(
-					expectedDataDefinitionColumn1,
-					expectedDataDefinitionColumn2)
+					expectedDataDefinitionField1, expectedDataDefinitionField2)
 			).description(
 				LocaleUtil.US, "Contact description"
 			).description(
@@ -328,8 +327,8 @@ public class DataDefinitionLocalServiceTest {
 			}
 		};
 
-		DataDefinitionColumn dataDefinitionColumn1 =
-			DataDefinitionColumn.Builder.newBuilder(
+		DataDefinitionField dataDefinitionField1 =
+			DataDefinitionField.Builder.newBuilder(
 				"title", DataDefinitionColumnType.STRING
 			).label(
 				expectedTitleLabels
@@ -339,7 +338,7 @@ public class DataDefinitionLocalServiceTest {
 
 		DataDefinition expectedDataDefinition =
 			DataDefinition.Builder.newBuilder(
-				Arrays.asList(dataDefinitionColumn1)
+				Arrays.asList(dataDefinitionField1)
 			).name(
 				LocaleUtil.US, "Story"
 			).name(
@@ -374,8 +373,8 @@ public class DataDefinitionLocalServiceTest {
 				}
 			};
 
-			DataDefinitionColumn dataDefinitionColumn2 =
-				DataDefinitionColumn.Builder.newBuilder(
+			DataDefinitionField dataDefinitionField2 =
+				DataDefinitionField.Builder.newBuilder(
 					"description", DataDefinitionColumnType.STRING
 				).label(
 					expectedDescriptionLabels
@@ -384,7 +383,7 @@ public class DataDefinitionLocalServiceTest {
 				).build();
 
 			expectedDataDefinition = DataDefinition.Builder.newBuilder(
-				Arrays.asList(dataDefinitionColumn1, dataDefinitionColumn2)
+				Arrays.asList(dataDefinitionField1, dataDefinitionField2)
 			).dataDefinitionId(
 				dataDefinitionId
 			).name(

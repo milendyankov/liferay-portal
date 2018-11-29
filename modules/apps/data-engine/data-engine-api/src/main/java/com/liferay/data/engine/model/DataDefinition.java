@@ -59,7 +59,7 @@ public final class DataDefinition implements ClassedModel, Serializable {
 		return false;
 	}
 
-	public List<DataDefinitionColumn> getColumns() {
+	public List<DataDefinitionField> getColumns() {
 		return Collections.unmodifiableList(_columns);
 	}
 
@@ -119,7 +119,7 @@ public final class DataDefinition implements ClassedModel, Serializable {
 
 	public static final class Builder {
 
-		public static Builder newBuilder(List<DataDefinitionColumn> columns) {
+		public static Builder newBuilder(List<DataDefinitionField> columns) {
 			return new Builder(columns);
 		}
 
@@ -170,7 +170,7 @@ public final class DataDefinition implements ClassedModel, Serializable {
 			return this;
 		}
 
-		private Builder(List<DataDefinitionColumn> columns) {
+		private Builder(List<DataDefinitionField> columns) {
 			_dataDefinition._columns.addAll(columns);
 		}
 
@@ -181,7 +181,7 @@ public final class DataDefinition implements ClassedModel, Serializable {
 	private DataDefinition() {
 	}
 
-	private final List<DataDefinitionColumn> _columns = new ArrayList<>();
+	private final List<DataDefinitionField> _columns = new ArrayList<>();
 	private long _dataDefinitionId;
 	private final Map<String, String> _description = new HashMap<>();
 	private final Map<String, String> _name = new HashMap<>();
