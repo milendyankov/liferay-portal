@@ -47,6 +47,7 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import org.junit.Assert;
@@ -76,19 +77,20 @@ public class DataDefinitionLocalServiceTest {
 
 	@Test(expected = DataDefinitionException.class)
 	public void testDelete() throws Exception {
-		Map<String, String> expectedNameLabels = new HashMap() {
+		Map<String, String> expectedNameLabels = new HashMap<String, String>() {
 			{
 				put("pt_BR", "Nome");
 				put("en_US", "Name");
 			}
 		};
 
+
 		DataDefinitionField dataDefinitionField =
-			DataDefinitionField.Builder.newBuilder(
-				"name", DataDefinitionColumnType.STRING
-			).label(
-				expectedNameLabels
-			).build();
+				DataDefinitionField.buildField()
+					.called("name")
+					.ofType(DataDefinitionColumnType.STRING)
+					.withLabels(expectedNameLabels)
+					.done();
 
 		DataDefinition dataDefinition = DataDefinition.Builder.newBuilder(
 			Arrays.asList(dataDefinitionField)
@@ -132,44 +134,34 @@ public class DataDefinitionLocalServiceTest {
 
 	@Test
 	public void testGet() throws Exception {
-		Map<String, String> column1Labels = new HashMap() {
+		
+		Map<String, String> column1Labels = new HashMap<String, String>() {
 			{
 				put("en_US", "Column 1");
 			}
 		};
 
-		DataDefinitionField dataDefinitionField1 =
-			DataDefinitionField.Builder.newBuilder(
-				"column1", DataDefinitionColumnType.STRING
-			).label(
-				column1Labels
-			).build();
 
-		Map<String, String> column2Labels = new HashMap() {
-			{
-				put("en_US", "Column 2");
-			}
-		};
+		DataDefinitionField dataDefinitionField1 =
+				DataDefinitionField.buildField()
+					.called("column1")
+					.ofType(DataDefinitionColumnType.STRING)
+					.withLabels(column1Labels)
+					.done();
 
 		DataDefinitionField dataDefinitionField2 =
-			DataDefinitionField.Builder.newBuilder(
-				"column2", DataDefinitionColumnType.NUMBER
-			).label(
-				column2Labels
-			).build();
-
-		Map<String, String> column3Labels = new HashMap() {
-			{
-				put("en_US", "Column 3");
-			}
-		};
+				DataDefinitionField.buildField()
+					.called("column2")
+					.ofType(DataDefinitionColumnType.NUMBER)
+					.withLabel("en_US", "Column 2")
+					.done();
 
 		DataDefinitionField dataDefinitionField3 =
-			DataDefinitionField.Builder.newBuilder(
-				"column3", DataDefinitionColumnType.DATE
-			).label(
-				column3Labels
-			).build();
+				DataDefinitionField.buildField()
+					.called("column3")
+					.ofType(DataDefinitionColumnType.DATE)
+					.withLabel(Locale.US, "Column 3")
+					.done();
 
 		DataDefinition expectedDataDefinition =
 			DataDefinition.Builder.newBuilder(
@@ -223,34 +215,30 @@ public class DataDefinitionLocalServiceTest {
 
 	@Test
 	public void testInsert() throws Exception {
-		Map<String, String> expectedNameLabels = new HashMap() {
+		Map<String, String> expectedNameLabels = new HashMap<String, String>() {
 			{
 				put("pt_BR", "Nome");
 				put("en_US", "Name");
 			}
 		};
 
-		DataDefinitionField expectedDataDefinitionField1 =
-			DataDefinitionField.Builder.newBuilder(
-				"name", DataDefinitionColumnType.STRING
-			).label(
-				expectedNameLabels
-			).build();
 
-		Map<String, String> expectedEmailLabels = new HashMap() {
-			{
-				put("pt_BR", "Endereço de Email");
-				put("en_US", "Email Address");
-			}
-		};
+		DataDefinitionField expectedDataDefinitionField1 =
+				DataDefinitionField.buildField()
+					.called("name")
+					.ofType(DataDefinitionColumnType.STRING)
+					.withLabels(expectedNameLabels)
+					.done();
 
 		DataDefinitionField expectedDataDefinitionField2 =
-			DataDefinitionField.Builder.newBuilder(
-				"email", DataDefinitionColumnType.STRING
-			).label(
-				expectedEmailLabels
-			).build();
+				DataDefinitionField.buildField()
+					.called("email")
+					.ofType(DataDefinitionColumnType.STRING)
+					.withLabel("pt_BR", "Endereço de Email")
+					.withLabel("en_US", "Email Address")
+					.done();
 
+	
 		DataDefinition expectedDataDefinition =
 			DataDefinition.Builder.newBuilder(
 				Arrays.asList(
@@ -320,7 +308,7 @@ public class DataDefinitionLocalServiceTest {
 
 	@Test
 	public void testUpdate() throws Exception {
-		Map<String, String> expectedTitleLabels = new HashMap() {
+		Map<String, String> expectedTitleLabels = new HashMap<String, String>() {
 			{
 				put("pt_BR", "Título");
 				put("en_US", "Title");
@@ -328,14 +316,13 @@ public class DataDefinitionLocalServiceTest {
 		};
 
 		DataDefinitionField dataDefinitionField1 =
-			DataDefinitionField.Builder.newBuilder(
-				"title", DataDefinitionColumnType.STRING
-			).label(
-				expectedTitleLabels
-			).localizable(
-				true
-			).build();
-
+				DataDefinitionField.buildField()
+					.called("title")
+					.ofType(DataDefinitionColumnType.STRING)
+					.withLabels(expectedTitleLabels)
+					.localizable()
+					.done();
+		
 		DataDefinition expectedDataDefinition =
 			DataDefinition.Builder.newBuilder(
 				Arrays.asList(dataDefinitionField1)
@@ -366,21 +353,14 @@ public class DataDefinitionLocalServiceTest {
 
 			expectedDataDefinition.setPrimaryKeyObj(dataDefinitionId);
 
-			Map<String, String> expectedDescriptionLabels = new HashMap() {
-				{
-					put("pt_BR", "Descrição");
-					put("en_US", "Description");
-				}
-			};
-
 			DataDefinitionField dataDefinitionField2 =
-				DataDefinitionField.Builder.newBuilder(
-					"description", DataDefinitionColumnType.STRING
-				).label(
-					expectedDescriptionLabels
-				).localizable(
-					true
-				).build();
+					DataDefinitionField.buildField()
+						.called("description")
+						.ofType(DataDefinitionColumnType.STRING)
+						.withLabel("pt_BR", "Descrição")
+						.withLabel("en_US", "Description")
+						.localizable()
+						.done();
 
 			expectedDataDefinition = DataDefinition.Builder.newBuilder(
 				Arrays.asList(dataDefinitionField1, dataDefinitionField2)

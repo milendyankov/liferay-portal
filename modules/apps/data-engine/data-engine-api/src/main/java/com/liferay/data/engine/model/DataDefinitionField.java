@@ -14,14 +14,15 @@
 
 package com.liferay.data.engine.model;
 
-import com.liferay.petra.lang.HashUtil;
-
 import java.io.Serializable;
-
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+
+import com.liferay.petra.lang.HashUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 
 /**
  * @author Leonardo Barros
@@ -116,20 +117,27 @@ public final class DataDefinitionField implements Serializable {
 	public boolean isRequired() {
 		return _required;
 	}
+	
+	public static Builder buildField() {
+		return new Builder();
+	}
 
 	public static final class Builder {
 
-		public static Builder newBuilder(
-			String name, DataDefinitionColumnType type) {
-
-			return new Builder(name, type);
-		}
-
-		public DataDefinitionField build() {
+//		private static final String DEFAULT_NAME = "Unnamed";
+//		private static final DataDefinitionColumnType DEFAULT_TYPE = DataDefinitionColumnType.STRING;
+		
+		public DataDefinitionField done() {
+//			if (_dataDefinitionColumn._name == null) {
+//				_dataDefinitionColumn._name = DEFAULT_NAME;
+//			}
+//			if (_dataDefinitionColumn._type == null) {
+//				_dataDefinitionColumn._type = DEFAULT_TYPE;
+//			}
 			return _dataDefinitionField;
 		}
 
-		public Builder defaultValue(Object defaultValue) {
+		public Builder withDefaultValue(Object defaultValue) {
 			_dataDefinitionField._defaultValue = defaultValue;
 
 			return this;
@@ -140,8 +148,26 @@ public final class DataDefinitionField implements Serializable {
 
 			return this;
 		}
+		
+		public Builder notIndexable() {
+			indexable(false);
 
-		public Builder label(Map<String, String> label) {
+			return this;
+		}
+
+		public Builder withLabel(String locale, String label) {
+			_dataDefinitionField._label.put(locale, label);
+
+			return this;
+		}
+
+		public Builder withLabel(Locale locale, String label) {
+			_dataDefinitionField._label.put(LocaleUtil.toLanguageId(locale), label);
+
+			return this;
+		}
+
+		public Builder withLabels(Map<String, String> label) {
 			_dataDefinitionField._label.putAll(label);
 
 			return this;
@@ -153,27 +179,64 @@ public final class DataDefinitionField implements Serializable {
 			return this;
 		}
 
-		public Builder repeatable(boolean repeatable) {
-			_dataDefinitionField._repeatable = repeatable;
+		public Builder localizable() {
+			localizable(true);
+
+			return this;
+		}
+		
+		public Builder called(String name) {
+			_dataDefinitionField._name = name;
 
 			return this;
 		}
 
+		public Builder repeatable(boolean repeatable) {
+			_dataDefinitionField._repeatable = repeatable;
+
+			return this;
+		}		
+		
+		public Builder repeatable() {
+			repeatable(true);
+
+			return this;
+		}
+		
 		public Builder required(boolean required) {
 			_dataDefinitionField._required = required;
 
 			return this;
 		}
+		
+		public Builder required() {
+			required(true);
 
-		public Builder tip(Map<String, String> tip) {
+			return this;
+		}
+
+		public Builder withTips(Map<String, String> tip) {
 			_dataDefinitionField._tip.putAll(tip);
 
 			return this;
 		}
 
-		private Builder(String name, DataDefinitionColumnType type) {
-			_dataDefinitionField._name = name;
+		public Builder withTip(String locale, String tip) {
+			_dataDefinitionField._tip.put(locale, tip);
+
+			return this;
+		}
+
+		public Builder withTip(Locale locale, String tip) {
+			_dataDefinitionField._tip.put(LocaleUtil.toLanguageId(locale), tip);
+
+			return this;
+		}
+
+		public Builder ofType(DataDefinitionColumnType type) {
 			_dataDefinitionField._type = type;
+
+			return this;
 		}
 
 		private final DataDefinitionField _dataDefinitionField =

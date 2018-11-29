@@ -128,24 +128,17 @@ public class DataDefinitionFieldsJSONDeserializer
 			}
 		}
 
-		return DataDefinitionField.Builder.newBuilder(
-			jsonObject.getString("name"),
-			DataDefinitionColumnType.parse(jsonObject.getString("type"))
-		).defaultValue(
-			jsonObject.get("defaultValue")
-		).indexable(
-			jsonObject.getBoolean("indexable", true)
-		).label(
-			labels
-		).localizable(
-			jsonObject.getBoolean("localizable", false)
-		).repeatable(
-			jsonObject.getBoolean("repeatable", false)
-		).required(
-			jsonObject.getBoolean("required", false)
-		).tip(
-			tips
-		).build();
+		return DataDefinitionField.buildField()
+				.called(jsonObject.getString("name"))
+				.ofType(DataDefinitionColumnType.parse(jsonObject.getString("type")))
+				.withDefaultValue(jsonObject.get("defaultValue"))
+				.indexable(jsonObject.getBoolean("indexable", true))
+				.withLabels(labels)
+				.localizable(jsonObject.getBoolean("localizable", false))
+				.repeatable(jsonObject.getBoolean("repeatable", false))
+				.required(jsonObject.getBoolean("required", false))
+				.withTips(tips)
+				.done();
 	}
 
 	@Reference
