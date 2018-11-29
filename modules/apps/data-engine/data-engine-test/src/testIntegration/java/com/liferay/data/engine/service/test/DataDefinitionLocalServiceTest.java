@@ -14,6 +14,18 @@
 
 package com.liferay.data.engine.service.test;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.data.engine.exception.DataDefinitionException;
 import com.liferay.data.engine.model.DataDefinition;
@@ -34,9 +46,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
-import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
-import com.liferay.portal.kernel.service.permission.ModelPermissions;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -44,18 +53,6 @@ import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 /**
  * @author Leonardo Barros
@@ -106,31 +103,21 @@ public class DataDefinitionLocalServiceTest {
 					.inGroup(_group.getGroupId())
 					.done();
 
-		try {
-			ServiceContext serviceContext = createServiceContext(
-				_group, _user, createModelPermissions());
+		DataDefinitionSaveResponse dataDefinitionSaveResponse =
+			_dataDefinitionLocalService.save(dataDefinitionSaveRequest);
 
-			ServiceContextThreadLocal.pushServiceContext(serviceContext);
+		long dataDefinitionId =
+			dataDefinitionSaveResponse.getDataDefinitionId();
 
-			DataDefinitionSaveResponse dataDefinitionSaveResponse =
-				_dataDefinitionLocalService.save(dataDefinitionSaveRequest);
+		DataDefinitionDeleteRequest dataDefinitionDeleteRequest =
+			DataDefinitionDeleteRequest.requestTo().deleteById(dataDefinitionId).done();
 
-			long dataDefinitionId =
-				dataDefinitionSaveResponse.getDataDefinitionId();
+		_dataDefinitionLocalService.delete(dataDefinitionDeleteRequest);
 
-			DataDefinitionDeleteRequest dataDefinitionDeleteRequest =
-				DataDefinitionDeleteRequest.requestTo().deleteById(dataDefinitionId).done();
+		DataDefinitionGetRequest dataDefinitionGetRequest =
+			DataDefinitionGetRequest.requestTo().getById(dataDefinitionId).done();
 
-			_dataDefinitionLocalService.delete(dataDefinitionDeleteRequest);
-
-			DataDefinitionGetRequest dataDefinitionGetRequest =
-				DataDefinitionGetRequest.requestTo().getById(dataDefinitionId).done();
-
-			_dataDefinitionLocalService.get(dataDefinitionGetRequest);
-		}
-		finally {
-			ServiceContextThreadLocal.popServiceContext();
-		}
+		_dataDefinitionLocalService.get(dataDefinitionGetRequest);
 	}
 
 	@Test
@@ -181,39 +168,28 @@ public class DataDefinitionLocalServiceTest {
 					.inGroup(_group.getGroupId())
 					.done();
 
-		
-		try {
-			ServiceContext serviceContext = createServiceContext(
-				_group, _user, createModelPermissions());
+		DataDefinitionSaveResponse dataDefinitionSaveResponse =
+			_dataDefinitionLocalService.save(dataDefinitionSaveRequest);
 
-			ServiceContextThreadLocal.pushServiceContext(serviceContext);
+		long dataDefinitionId =
+			dataDefinitionSaveResponse.getDataDefinitionId();
 
-			DataDefinitionSaveResponse dataDefinitionSaveResponse =
-				_dataDefinitionLocalService.save(dataDefinitionSaveRequest);
+		expectedDataDefinition.setPrimaryKeyObj(dataDefinitionId);
 
-			long dataDefinitionId =
-				dataDefinitionSaveResponse.getDataDefinitionId();
+		DataDefinitionGetRequest dataDefinitionGetRequest =
+			DataDefinitionGetRequest.requestTo().getById(dataDefinitionId).done();
 
-			expectedDataDefinition.setPrimaryKeyObj(dataDefinitionId);
+		DataDefinitionGetResponse dataDefinitionGetResponse =
+			_dataDefinitionLocalService.get(dataDefinitionGetRequest);
 
-			DataDefinitionGetRequest dataDefinitionGetRequest =
-				DataDefinitionGetRequest.requestTo().getById(dataDefinitionId).done();
+		Assert.assertEquals(
+			expectedDataDefinition,
+			dataDefinitionGetResponse.getDataDefinition());
 
-			DataDefinitionGetResponse dataDefinitionGetResponse =
-				_dataDefinitionLocalService.get(dataDefinitionGetRequest);
+		DataDefinitionDeleteRequest dataDefinitionDeleteRequest =
+			DataDefinitionDeleteRequest.requestTo().deleteById(dataDefinitionId).done();
 
-			Assert.assertEquals(
-				expectedDataDefinition,
-				dataDefinitionGetResponse.getDataDefinition());
-
-			DataDefinitionDeleteRequest dataDefinitionDeleteRequest =
-				DataDefinitionDeleteRequest.requestTo().deleteById(dataDefinitionId).done();
-
-			_dataDefinitionLocalService.delete(dataDefinitionDeleteRequest);
-		}
-		finally {
-			ServiceContextThreadLocal.popServiceContext();
-		}
+		_dataDefinitionLocalService.delete(dataDefinitionDeleteRequest);
 	}
 
 	@Test
@@ -262,50 +238,40 @@ public class DataDefinitionLocalServiceTest {
 					.done();
 
 
-		try {
-			ServiceContext serviceContext = createServiceContext(
-				_group, _user, createModelPermissions());
+		DataDefinitionSaveResponse dataDefinitionSaveResponse =
+			_dataDefinitionLocalService.save(dataDefinitionSaveRequest);
 
-			ServiceContextThreadLocal.pushServiceContext(serviceContext);
+		long dataDefinitionId =
+			dataDefinitionSaveResponse.getDataDefinitionId();
 
-			DataDefinitionSaveResponse dataDefinitionSaveResponse =
-				_dataDefinitionLocalService.save(dataDefinitionSaveRequest);
+		expectedDataDefinition.setPrimaryKeyObj(dataDefinitionId);
 
-			long dataDefinitionId =
-				dataDefinitionSaveResponse.getDataDefinitionId();
+		DataDefinitionGetRequest dataDefinitionGetRequest =
+			DataDefinitionGetRequest.requestTo().getById(dataDefinitionId).done();
 
-			expectedDataDefinition.setPrimaryKeyObj(dataDefinitionId);
+		DataDefinitionGetResponse dataDefinitionGetResponse =
+			_dataDefinitionLocalService.get(dataDefinitionGetRequest);
 
-			DataDefinitionGetRequest dataDefinitionGetRequest =
-				DataDefinitionGetRequest.requestTo().getById(dataDefinitionId).done();
+		DataDefinition dataDefinition =
+			dataDefinitionGetResponse.getDataDefinition();
 
-			DataDefinitionGetResponse dataDefinitionGetResponse =
-				_dataDefinitionLocalService.get(dataDefinitionGetRequest);
+		Assert.assertEquals(expectedDataDefinition, dataDefinition);
 
-			DataDefinition dataDefinition =
-				dataDefinitionGetResponse.getDataDefinition();
+		Role ownerRole = _roleLocalService.getRole(
+			_group.getCompanyId(), RoleConstants.OWNER);
 
-			Assert.assertEquals(expectedDataDefinition, dataDefinition);
+		ResourcePermission resourcePermission =
+			_resourcePermissionLocalService.fetchResourcePermission(
+				_group.getCompanyId(), DataDefinition.class.getName(),
+				ResourceConstants.SCOPE_INDIVIDUAL,
+				String.valueOf(dataDefinitionId), ownerRole.getRoleId());
 
-			Role ownerRole = _roleLocalService.getRole(
-				_group.getCompanyId(), RoleConstants.OWNER);
+		Assert.assertTrue(resourcePermission.hasActionId(ActionKeys.VIEW));
 
-			ResourcePermission resourcePermission =
-				_resourcePermissionLocalService.fetchResourcePermission(
-					_group.getCompanyId(), DataDefinition.class.getName(),
-					ResourceConstants.SCOPE_INDIVIDUAL,
-					String.valueOf(dataDefinitionId), ownerRole.getRoleId());
+		DataDefinitionDeleteRequest dataDefinitionDeleteRequest =
+			DataDefinitionDeleteRequest.requestTo().deleteById(dataDefinitionId).done();
 
-			Assert.assertTrue(resourcePermission.hasActionId(ActionKeys.VIEW));
-
-			DataDefinitionDeleteRequest dataDefinitionDeleteRequest =
-				DataDefinitionDeleteRequest.requestTo().deleteById(dataDefinitionId).done();
-
-			_dataDefinitionLocalService.delete(dataDefinitionDeleteRequest);
-		}
-		finally {
-			ServiceContextThreadLocal.popServiceContext();
-		}
+		_dataDefinitionLocalService.delete(dataDefinitionDeleteRequest);
 	}
 
 	@Test
@@ -340,92 +306,59 @@ public class DataDefinitionLocalServiceTest {
 					.inGroup(_group.getGroupId())
 					.done();
 
-
-		try {
-			ServiceContext serviceContext = createServiceContext(
-				_group, _user, createModelPermissions());
-
-			ServiceContextThreadLocal.pushServiceContext(serviceContext);
-
-			DataDefinitionSaveResponse dataDefinitionSaveResponse =
-				_dataDefinitionLocalService.save(dataDefinitionSaveRequest);
-
-			long dataDefinitionId =
-				dataDefinitionSaveResponse.getDataDefinitionId();
-
-			expectedDataDefinition.setPrimaryKeyObj(dataDefinitionId);
-
-			DataDefinitionField dataDefinitionField2 =
-					DataDefinitionField.buildField()
-						.called("description")
-						.ofType(DataDefinitionColumnType.STRING)
-						.withLabel("pt_BR", "Descrição")
-						.withLabel("en_US", "Description")
-						.localizable()
-						.done();
-
-			expectedDataDefinition =
-					DataDefinition.buildDefinition()
-						.withId(dataDefinitionId)
-						.withName(LocaleUtil.US, "Story")
-						.withName(LocaleUtil.BRAZIL, "Estória")
-						.ofStorageType("json")
-						.withFields(dataDefinitionField1, dataDefinitionField2)
-						.done();
-
-			dataDefinitionSaveRequest =
-					DataDefinitionSaveRequest.requestTo()
-						.save(expectedDataDefinition)
-						.onBehalfOf(_user.getUserId())
-						.inGroup(_group.getGroupId())
-						.done();
-
+		DataDefinitionSaveResponse dataDefinitionSaveResponse =
 			_dataDefinitionLocalService.save(dataDefinitionSaveRequest);
 
-			DataDefinitionGetRequest dataDefinitionGetRequest =
-				DataDefinitionGetRequest.requestTo().getById(dataDefinitionId).done();
+		long dataDefinitionId =
+			dataDefinitionSaveResponse.getDataDefinitionId();
 
-			DataDefinitionGetResponse dataDefinitionGetResponse =
-				_dataDefinitionLocalService.get(dataDefinitionGetRequest);
+		expectedDataDefinition.setPrimaryKeyObj(dataDefinitionId);
 
-			DataDefinition dataDefinition =
-				dataDefinitionGetResponse.getDataDefinition();
+		DataDefinitionField dataDefinitionField2 =
+				DataDefinitionField.buildField()
+					.called("description")
+					.ofType(DataDefinitionColumnType.STRING)
+					.withLabel("pt_BR", "Descrição")
+					.withLabel("en_US", "Description")
+					.localizable()
+					.done();
 
-			Assert.assertEquals(expectedDataDefinition, dataDefinition);
+		expectedDataDefinition =
+				DataDefinition.buildDefinition()
+					.withId(dataDefinitionId)
+					.withName(LocaleUtil.US, "Story")
+					.withName(LocaleUtil.BRAZIL, "Estória")
+					.ofStorageType("json")
+					.withFields(dataDefinitionField1, dataDefinitionField2)
+					.done();
 
-			DataDefinitionDeleteRequest dataDefinitionDeleteRequest =
-				DataDefinitionDeleteRequest.requestTo().deleteById(dataDefinitionId).done();
+		dataDefinitionSaveRequest =
+				DataDefinitionSaveRequest.requestTo()
+					.save(expectedDataDefinition)
+					.onBehalfOf(_user.getUserId())
+					.inGroup(_group.getGroupId())
+					.done();
 
-			_dataDefinitionLocalService.delete(dataDefinitionDeleteRequest);
-		}
-		finally {
-			ServiceContextThreadLocal.popServiceContext();
-		}
+		_dataDefinitionLocalService.save(dataDefinitionSaveRequest);
+
+		DataDefinitionGetRequest dataDefinitionGetRequest =
+			DataDefinitionGetRequest.requestTo().getById(dataDefinitionId).done();
+
+		DataDefinitionGetResponse dataDefinitionGetResponse =
+			_dataDefinitionLocalService.get(dataDefinitionGetRequest);
+
+		DataDefinition dataDefinition =
+			dataDefinitionGetResponse.getDataDefinition();
+
+		Assert.assertEquals(expectedDataDefinition, dataDefinition);
+
+		DataDefinitionDeleteRequest dataDefinitionDeleteRequest =
+			DataDefinitionDeleteRequest.requestTo().deleteById(dataDefinitionId).done();
+
+		_dataDefinitionLocalService.delete(dataDefinitionDeleteRequest);
+
 	}
 
-	protected ModelPermissions createModelPermissions() {
-		ModelPermissions modelPermissions = new ModelPermissions();
-
-		modelPermissions.addRolePermissions(
-			RoleConstants.OWNER, ActionKeys.VIEW);
-
-		return modelPermissions;
-	}
-
-	protected ServiceContext createServiceContext(
-		Group group, User user, ModelPermissions modelPermissions) {
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		serviceContext.setAddGroupPermissions(false);
-		serviceContext.setAddGuestPermissions(false);
-		serviceContext.setCompanyId(group.getCompanyId());
-		serviceContext.setModelPermissions(modelPermissions);
-		serviceContext.setScopeGroupId(group.getGroupId());
-		serviceContext.setUserId(user.getUserId());
-
-		return serviceContext;
-	}
 
 	@Inject(type = DataDefinitionLocalService.class)
 	private DataDefinitionLocalService _dataDefinitionLocalService;

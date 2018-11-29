@@ -14,6 +14,17 @@
 
 package com.liferay.data.engine.internal.service;
 
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+
 import com.liferay.data.engine.exception.DataDefinitionException;
 import com.liferay.data.engine.exception.DataDefinitionFieldsDeserializerException;
 import com.liferay.data.engine.exception.DataDefinitionFieldsSerializerException;
@@ -44,21 +55,17 @@ import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.RoleConstants;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ResourceLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
+import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.service.permission.ModelPermissions;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
-
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Leonardo Barros
@@ -125,29 +132,62 @@ public class DataDefinitionLocalServiceImpl
 
 			long dataDefinitionId = dataDefinition.getDataDefinitionId();
 
-			ServiceContext serviceContext =
-				ServiceContextThreadLocal.getServiceContext();
+			/**
+			 *  It is fine for now to assumes we are in portal environment 
+			 *  but in the future we may want to have this in stand-alone environment 
+			 *  
+			 *  The `if` below makes a poor attempt to distinguish the two scenarios
+			 *  I don't expect this code to made it in production in this form.
+			 *  I wrote it this way to demonstrate the the need to hide internal details 
+			 *  from the consumer!
+			 */
 
-			if (dataDefinitionId == 0) {
-				DDMStructure ddmStructure = createDDMStructure(
-					userId, groupId, classNameId, dataDefinition,
-					serviceContext);
+			if (userLocalService != null && groupLocalService != null) {
 
-				dataDefinitionId = ddmStructure.getStructureId();
-
-				resourceLocalService.addModelResources(
-					ddmStructure.getCompanyId(), groupId, userId,
-					DataDefinition.class.getName(), dataDefinitionId,
-					serviceContext.getModelPermissions());
-
-				ddlRecordSetLocalService.addRecordSet(
-					userId, groupId, dataDefinitionId,
-					String.valueOf(dataDefinitionId), ddmStructure.getNameMap(),
-					ddmStructure.getDescriptionMap(), 0,
-					DDLRecordSetConstants.SCOPE_DATA_ENGINE, serviceContext);
-			}
-			else {
-				updateDDMStructure(userId, dataDefinition, serviceContext);
+				/**
+				 *  In portal scenario we always have all the services (user, permission, etc)
+				 *   
+				 *  Since `ServiceContext` ONLY makes sense in portal environment 
+				 *  it MUST NOT be exposed to consumers. Let alone expecting them to 
+				 *  know to use it via `ThreadLocal`s.
+				 */
+			
+				ServiceContext serviceContext = createServiceContext(
+						groupLocalService.getGroup(groupId),
+						userLocalService.getUser(userId),
+						createModelPermissions());
+				
+				if (dataDefinitionId == 0) {
+					DDMStructure ddmStructure = createDDMStructure(
+						userId, groupId, classNameId, dataDefinition,
+						serviceContext);
+	
+					dataDefinitionId = ddmStructure.getStructureId();
+	
+					resourceLocalService.addModelResources(
+						ddmStructure.getCompanyId(), groupId, userId,
+						DataDefinition.class.getName(), dataDefinitionId,
+						serviceContext.getModelPermissions());
+	
+					ddlRecordSetLocalService.addRecordSet(
+						userId, groupId, dataDefinitionId,
+						String.valueOf(dataDefinitionId), ddmStructure.getNameMap(),
+						ddmStructure.getDescriptionMap(), 0,
+						DDLRecordSetConstants.SCOPE_DATA_ENGINE, serviceContext);
+				}
+				else {
+					updateDDMStructure(userId, dataDefinition, serviceContext);
+				}
+				
+			} else {
+				
+				/**
+				 *  Throw exception for now but in the future we may want to support
+				 *  stand-alone environment where portal services are not present 
+				 *  (data is then stored anonymously and not scoped). 
+				 */
+				
+				throw new IllegalStateException ("Missing important services");
 			}
 
 			return DataDefinitionSaveResponse.Builder.of(dataDefinitionId);
@@ -278,6 +318,31 @@ public class DataDefinitionLocalServiceImpl
 			descriptionMap, serialize(dataDefinition), serviceContext);
 	}
 
+	
+	protected ServiceContext createServiceContext(
+		Group group, User user, ModelPermissions modelPermissions) {
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setAddGroupPermissions(false);
+		serviceContext.setAddGuestPermissions(false);
+		serviceContext.setCompanyId(group.getCompanyId());
+		serviceContext.setModelPermissions(modelPermissions);
+		serviceContext.setScopeGroupId(group.getGroupId());
+		serviceContext.setUserId(user.getUserId());
+
+		return serviceContext;
+	}
+	
+	protected ModelPermissions createModelPermissions() {
+		ModelPermissions modelPermissions = new ModelPermissions();
+
+		modelPermissions.addRolePermissions(
+			RoleConstants.OWNER, ActionKeys.VIEW);
+
+		return modelPermissions;
+	}
+	
 	@Reference
 	protected DataDefinitionFieldsDeserializerTracker
 		dataDefinitionFieldsDeserializerTracker;
@@ -297,5 +362,11 @@ public class DataDefinitionLocalServiceImpl
 
 	@Reference
 	protected ResourceLocalService resourceLocalService;
+
+	@Reference(cardinality=ReferenceCardinality.OPTIONAL)
+	protected GroupLocalService groupLocalService;
+
+	@Reference(cardinality=ReferenceCardinality.OPTIONAL)
+	protected UserLocalService userLocalService;
 
 }
