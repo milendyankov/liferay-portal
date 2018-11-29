@@ -33,32 +33,33 @@ public final class DataDefinitionSaveRequest {
 		return _userId;
 	}
 
+	public static Builder requestTo() {
+		return new Builder();
+	}
+
 	public static final class Builder {
 
-		public static Builder newBuilder(
-			long userId, long groupId, DataDefinition dataDefinition) {
 
-			return new Builder(userId, groupId, dataDefinition);
-		}
-
-		public static DataDefinitionSaveRequest of(
-			long userId, long groupId, DataDefinition dataDefinition) {
-
-			return newBuilder(
-				userId, groupId, dataDefinition
-			).build();
-		}
-
-		public DataDefinitionSaveRequest build() {
+		public DataDefinitionSaveRequest done() {
 			return _dataDefinitionSaveRequest;
 		}
 
-		private Builder(
-			long userId, long groupId, DataDefinition dataDefinition) {
-
-			_dataDefinitionSaveRequest._userId = userId;
-			_dataDefinitionSaveRequest._groupId = groupId;
+		public Builder save(DataDefinition dataDefinition) {
 			_dataDefinitionSaveRequest._dataDefinition = dataDefinition;
+
+			return this;
+		}
+
+		public Builder onBehalfOf(long userId) {
+			_dataDefinitionSaveRequest._userId = userId;
+
+			return this;
+		}
+
+		public Builder inGroup(long groupId) {
+			_dataDefinitionSaveRequest._groupId = groupId;
+
+			return this;
 		}
 
 		private final DataDefinitionSaveRequest _dataDefinitionSaveRequest =

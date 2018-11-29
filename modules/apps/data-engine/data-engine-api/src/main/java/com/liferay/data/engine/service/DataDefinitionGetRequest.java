@@ -23,24 +23,20 @@ public final class DataDefinitionGetRequest {
 		return _dataDefinitionId;
 	}
 
+	public static Builder requestTo() {
+		return new Builder();
+	}
+
 	public static final class Builder {
 
-		public static Builder newBuilder(long dataDefinitionId) {
-			return new Builder(dataDefinitionId);
-		}
-
-		public static DataDefinitionGetRequest of(long dataDefinitionId) {
-			return newBuilder(
-				dataDefinitionId
-			).build();
-		}
-
-		public DataDefinitionGetRequest build() {
-			return _dataDefinitionGetRequest;
-		}
-
-		private Builder(long dataDefinitionId) {
+		public Builder getById(long dataDefinitionId) {
 			_dataDefinitionGetRequest._dataDefinitionId = dataDefinitionId;
+
+			return this;
+		}
+
+		public DataDefinitionGetRequest done() {
+			return _dataDefinitionGetRequest;
 		}
 
 		private DataDefinitionGetRequest _dataDefinitionGetRequest =

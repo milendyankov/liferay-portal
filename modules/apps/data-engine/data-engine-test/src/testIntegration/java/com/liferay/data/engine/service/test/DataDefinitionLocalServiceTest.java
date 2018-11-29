@@ -100,9 +100,11 @@ public class DataDefinitionLocalServiceTest {
 					.done();
 
 		DataDefinitionSaveRequest dataDefinitionSaveRequest =
-			DataDefinitionSaveRequest.Builder.of(
-				_user.getUserId(), _group.getGroupId(), dataDefinition
-			);
+				DataDefinitionSaveRequest.requestTo()
+					.save(dataDefinition)
+					.onBehalfOf(_user.getUserId())
+					.inGroup(_group.getGroupId())
+					.done();
 
 		try {
 			ServiceContext serviceContext = createServiceContext(
@@ -117,12 +119,12 @@ public class DataDefinitionLocalServiceTest {
 				dataDefinitionSaveResponse.getDataDefinitionId();
 
 			DataDefinitionDeleteRequest dataDefinitionDeleteRequest =
-				DataDefinitionDeleteRequest.Builder.of(dataDefinitionId);
+				DataDefinitionDeleteRequest.requestTo().deleteById(dataDefinitionId).done();
 
 			_dataDefinitionLocalService.delete(dataDefinitionDeleteRequest);
 
 			DataDefinitionGetRequest dataDefinitionGetRequest =
-				DataDefinitionGetRequest.Builder.of(dataDefinitionId);
+				DataDefinitionGetRequest.requestTo().getById(dataDefinitionId).done();
 
 			_dataDefinitionLocalService.get(dataDefinitionGetRequest);
 		}
@@ -173,10 +175,13 @@ public class DataDefinitionLocalServiceTest {
 					.done();
 
 		DataDefinitionSaveRequest dataDefinitionSaveRequest =
-			DataDefinitionSaveRequest.Builder.of(
-				_user.getUserId(), _group.getGroupId(), expectedDataDefinition
-			);
+				DataDefinitionSaveRequest.requestTo()
+					.save(expectedDataDefinition)
+					.onBehalfOf(_user.getUserId())
+					.inGroup(_group.getGroupId())
+					.done();
 
+		
 		try {
 			ServiceContext serviceContext = createServiceContext(
 				_group, _user, createModelPermissions());
@@ -192,7 +197,7 @@ public class DataDefinitionLocalServiceTest {
 			expectedDataDefinition.setPrimaryKeyObj(dataDefinitionId);
 
 			DataDefinitionGetRequest dataDefinitionGetRequest =
-				DataDefinitionGetRequest.Builder.of(dataDefinitionId);
+				DataDefinitionGetRequest.requestTo().getById(dataDefinitionId).done();
 
 			DataDefinitionGetResponse dataDefinitionGetResponse =
 				_dataDefinitionLocalService.get(dataDefinitionGetRequest);
@@ -202,7 +207,7 @@ public class DataDefinitionLocalServiceTest {
 				dataDefinitionGetResponse.getDataDefinition());
 
 			DataDefinitionDeleteRequest dataDefinitionDeleteRequest =
-				DataDefinitionDeleteRequest.Builder.of(dataDefinitionId);
+				DataDefinitionDeleteRequest.requestTo().deleteById(dataDefinitionId).done();
 
 			_dataDefinitionLocalService.delete(dataDefinitionDeleteRequest);
 		}
@@ -248,11 +253,14 @@ public class DataDefinitionLocalServiceTest {
 							expectedDataDefinitionField1, 
 							expectedDataDefinitionField2)
 					.done();
-
+		
 		DataDefinitionSaveRequest dataDefinitionSaveRequest =
-			DataDefinitionSaveRequest.Builder.of(
-				_user.getUserId(), _group.getGroupId(), expectedDataDefinition
-			);
+				DataDefinitionSaveRequest.requestTo()
+					.save(expectedDataDefinition)
+					.onBehalfOf(_user.getUserId())
+					.inGroup(_group.getGroupId())
+					.done();
+
 
 		try {
 			ServiceContext serviceContext = createServiceContext(
@@ -269,7 +277,7 @@ public class DataDefinitionLocalServiceTest {
 			expectedDataDefinition.setPrimaryKeyObj(dataDefinitionId);
 
 			DataDefinitionGetRequest dataDefinitionGetRequest =
-				DataDefinitionGetRequest.Builder.of(dataDefinitionId);
+				DataDefinitionGetRequest.requestTo().getById(dataDefinitionId).done();
 
 			DataDefinitionGetResponse dataDefinitionGetResponse =
 				_dataDefinitionLocalService.get(dataDefinitionGetRequest);
@@ -291,7 +299,7 @@ public class DataDefinitionLocalServiceTest {
 			Assert.assertTrue(resourcePermission.hasActionId(ActionKeys.VIEW));
 
 			DataDefinitionDeleteRequest dataDefinitionDeleteRequest =
-				DataDefinitionDeleteRequest.Builder.of(dataDefinitionId);
+				DataDefinitionDeleteRequest.requestTo().deleteById(dataDefinitionId).done();
 
 			_dataDefinitionLocalService.delete(dataDefinitionDeleteRequest);
 		}
@@ -324,11 +332,14 @@ public class DataDefinitionLocalServiceTest {
 					.ofStorageType("json")
 					.withFields(dataDefinitionField1)
 					.done();
-
+		
 		DataDefinitionSaveRequest dataDefinitionSaveRequest =
-			DataDefinitionSaveRequest.Builder.of(
-				_user.getUserId(), _group.getGroupId(), expectedDataDefinition
-			);
+				DataDefinitionSaveRequest.requestTo()
+					.save(expectedDataDefinition)
+					.onBehalfOf(_user.getUserId())
+					.inGroup(_group.getGroupId())
+					.done();
+
 
 		try {
 			ServiceContext serviceContext = createServiceContext(
@@ -362,14 +373,17 @@ public class DataDefinitionLocalServiceTest {
 						.withFields(dataDefinitionField1, dataDefinitionField2)
 						.done();
 
-			dataDefinitionSaveRequest = DataDefinitionSaveRequest.Builder.of(
-				_user.getUserId(), _group.getGroupId(), expectedDataDefinition
-			);
+			dataDefinitionSaveRequest =
+					DataDefinitionSaveRequest.requestTo()
+						.save(expectedDataDefinition)
+						.onBehalfOf(_user.getUserId())
+						.inGroup(_group.getGroupId())
+						.done();
 
 			_dataDefinitionLocalService.save(dataDefinitionSaveRequest);
 
 			DataDefinitionGetRequest dataDefinitionGetRequest =
-				DataDefinitionGetRequest.Builder.of(dataDefinitionId);
+				DataDefinitionGetRequest.requestTo().getById(dataDefinitionId).done();
 
 			DataDefinitionGetResponse dataDefinitionGetResponse =
 				_dataDefinitionLocalService.get(dataDefinitionGetRequest);
@@ -380,7 +394,7 @@ public class DataDefinitionLocalServiceTest {
 			Assert.assertEquals(expectedDataDefinition, dataDefinition);
 
 			DataDefinitionDeleteRequest dataDefinitionDeleteRequest =
-				DataDefinitionDeleteRequest.Builder.of(dataDefinitionId);
+				DataDefinitionDeleteRequest.requestTo().deleteById(dataDefinitionId).done();
 
 			_dataDefinitionLocalService.delete(dataDefinitionDeleteRequest);
 		}

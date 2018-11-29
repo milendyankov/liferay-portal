@@ -22,25 +22,21 @@ public final class DataDefinitionDeleteRequest {
 	public long getDataDefinitionId() {
 		return _dataDefinitionId;
 	}
+	
+	public static Builder requestTo() {
+		return new Builder();
+	}
 
 	public static final class Builder {
 
-		public static Builder newBuilder(long dataDefinitionId) {
-			return new Builder(dataDefinitionId);
-		}
 
-		public static DataDefinitionDeleteRequest of(long dataDefinitionId) {
-			return newBuilder(
-				dataDefinitionId
-			).build();
-		}
-
-		public DataDefinitionDeleteRequest build() {
-			return _dataDefinitionDeleteRequest;
-		}
-
-		private Builder(long dataDefinitionId) {
+		public Builder deleteById (long dataDefinitionId) {
 			_dataDefinitionDeleteRequest._dataDefinitionId = dataDefinitionId;
+			return this;
+		}
+
+		public DataDefinitionDeleteRequest done() {
+			return _dataDefinitionDeleteRequest;
 		}
 
 		private final DataDefinitionDeleteRequest _dataDefinitionDeleteRequest =
