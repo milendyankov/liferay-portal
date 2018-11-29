@@ -59,12 +59,11 @@ public class DataDefinitionModelResourcePermission
 			String actionId)
 		throws PortalException {
 
-		DataDefinition dataDefinition = DataDefinition.Builder.newBuilder(
-			Collections.emptyList()
-		).dataDefinitionId(
-			primaryKey
-		).build();
-
+		DataDefinition dataDefinition = DataDefinition.buildDefinition()
+				.withId(primaryKey)
+				.withFields(Collections.emptyList())
+				.done();
+		
 		check(permissionChecker, dataDefinition, actionId);
 	}
 
@@ -95,12 +94,11 @@ public class DataDefinitionModelResourcePermission
 			PermissionChecker permissionChecker, long primaryKey,
 			String actionId)
 		throws PortalException {
-
-		DataDefinition dataDefinition = DataDefinition.Builder.newBuilder(
-			Collections.emptyList()
-		).dataDefinitionId(
-			primaryKey
-		).build();
+		
+		DataDefinition dataDefinition = DataDefinition.buildDefinition()
+				.withId(primaryKey)
+				.withFields(Collections.emptyList())
+				.done();
 
 		return contains(permissionChecker, dataDefinition, actionId);
 	}

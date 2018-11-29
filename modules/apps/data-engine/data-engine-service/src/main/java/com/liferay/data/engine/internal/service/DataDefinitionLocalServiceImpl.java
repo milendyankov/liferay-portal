@@ -232,17 +232,13 @@ public class DataDefinitionLocalServiceImpl
 		List<DataDefinitionField> dataDefinitionFields = deserialize(
 			ddmStructure.getDefinition());
 
-		return DataDefinition.Builder.newBuilder(
-			dataDefinitionFields
-		).dataDefinitionId(
-			ddmStructure.getStructureId()
-		).description(
-			ddmStructure.getDescriptionMap()
-		).name(
-			ddmStructure.getNameMap()
-		).storageType(
-			ddmStructure.getStorageType()
-		).build();
+		return DataDefinition.buildDefinition()
+				.withId(ddmStructure.getStructureId())
+				.withNames(ddmStructure.getNameMap())
+				.withDescriptions(ddmStructure.getDescriptionMap())
+				.ofStorageType(ddmStructure.getStorageType())
+				.withFields(dataDefinitionFields)
+				.done();
 	}
 
 	protected String serialize(DataDefinition dataDefinition)

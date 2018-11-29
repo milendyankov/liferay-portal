@@ -92,13 +92,12 @@ public class DataDefinitionLocalServiceTest {
 					.withLabels(expectedNameLabels)
 					.done();
 
-		DataDefinition dataDefinition = DataDefinition.Builder.newBuilder(
-			Arrays.asList(dataDefinitionField)
-		).name(
-			LocaleUtil.US, "Definition 1"
-		).storageType(
-			"json"
-		).build();
+		DataDefinition dataDefinition =
+				DataDefinition.buildDefinition()
+					.withName(LocaleUtil.US, "Definition 1")
+					.ofStorageType("json")
+					.withFields(Arrays.asList(dataDefinitionField))
+					.done();
 
 		DataDefinitionSaveRequest dataDefinitionSaveRequest =
 			DataDefinitionSaveRequest.Builder.of(
@@ -162,17 +161,16 @@ public class DataDefinitionLocalServiceTest {
 					.ofType(DataDefinitionColumnType.DATE)
 					.withLabel(Locale.US, "Column 3")
 					.done();
-
+		
 		DataDefinition expectedDataDefinition =
-			DataDefinition.Builder.newBuilder(
-				Arrays.asList(
-					dataDefinitionField1, dataDefinitionField2,
-					dataDefinitionField3)
-			).name(
-				LocaleUtil.US, "Definition 2"
-			).storageType(
-				"json"
-			).build();
+				DataDefinition.buildDefinition()
+					.withName(LocaleUtil.US, "Definition 2")
+					.ofStorageType("json")
+					.withFields(
+							dataDefinitionField1, 
+							dataDefinitionField2,
+							dataDefinitionField3)
+					.done();
 
 		DataDefinitionSaveRequest dataDefinitionSaveRequest =
 			DataDefinitionSaveRequest.Builder.of(
@@ -240,20 +238,16 @@ public class DataDefinitionLocalServiceTest {
 
 	
 		DataDefinition expectedDataDefinition =
-			DataDefinition.Builder.newBuilder(
-				Arrays.asList(
-					expectedDataDefinitionField1, expectedDataDefinitionField2)
-			).description(
-				LocaleUtil.US, "Contact description"
-			).description(
-				LocaleUtil.BRAZIL, "Descrição do contato"
-			).name(
-				LocaleUtil.US, "Contact"
-			).name(
-				LocaleUtil.BRAZIL, "Contato"
-			).storageType(
-				"json"
-			).build();
+				DataDefinition.buildDefinition()
+					.withName(LocaleUtil.US, "Contact")
+					.withName(LocaleUtil.BRAZIL, "Contato")
+					.withDescription(LocaleUtil.US, "Contact description")
+					.withDescription(LocaleUtil.BRAZIL, "Descrição do contato")
+					.ofStorageType("json")
+					.withFields(
+							expectedDataDefinitionField1, 
+							expectedDataDefinitionField2)
+					.done();
 
 		DataDefinitionSaveRequest dataDefinitionSaveRequest =
 			DataDefinitionSaveRequest.Builder.of(
@@ -324,15 +318,12 @@ public class DataDefinitionLocalServiceTest {
 					.done();
 		
 		DataDefinition expectedDataDefinition =
-			DataDefinition.Builder.newBuilder(
-				Arrays.asList(dataDefinitionField1)
-			).name(
-				LocaleUtil.US, "Story"
-			).name(
-				LocaleUtil.BRAZIL, "Estória"
-			).storageType(
-				"json"
-			).build();
+				DataDefinition.buildDefinition()
+					.withName(LocaleUtil.US, "Story")
+					.withName(LocaleUtil.BRAZIL, "Estória")
+					.ofStorageType("json")
+					.withFields(dataDefinitionField1)
+					.done();
 
 		DataDefinitionSaveRequest dataDefinitionSaveRequest =
 			DataDefinitionSaveRequest.Builder.of(
@@ -362,17 +353,14 @@ public class DataDefinitionLocalServiceTest {
 						.localizable()
 						.done();
 
-			expectedDataDefinition = DataDefinition.Builder.newBuilder(
-				Arrays.asList(dataDefinitionField1, dataDefinitionField2)
-			).dataDefinitionId(
-				dataDefinitionId
-			).name(
-				LocaleUtil.US, "Story"
-			).name(
-				LocaleUtil.BRAZIL, "Estória"
-			).storageType(
-				"json"
-			).build();
+			expectedDataDefinition =
+					DataDefinition.buildDefinition()
+						.withId(dataDefinitionId)
+						.withName(LocaleUtil.US, "Story")
+						.withName(LocaleUtil.BRAZIL, "Estória")
+						.ofStorageType("json")
+						.withFields(dataDefinitionField1, dataDefinitionField2)
+						.done();
 
 			dataDefinitionSaveRequest = DataDefinitionSaveRequest.Builder.of(
 				_user.getUserId(), _group.getGroupId(), expectedDataDefinition
