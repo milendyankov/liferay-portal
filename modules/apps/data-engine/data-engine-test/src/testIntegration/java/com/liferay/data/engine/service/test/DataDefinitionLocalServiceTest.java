@@ -14,6 +14,13 @@
 
 package com.liferay.data.engine.service.test;
 
+import static com.liferay.data.engine.model.DataDefinition.buildDefinition;
+import static com.liferay.data.engine.model.DataDefinition.buildDefinitionFrom;
+import static com.liferay.data.engine.model.DataDefinitionField.buildField;
+import static com.liferay.data.engine.model.DataDefinitionField.buildFieldFrom;
+import static com.liferay.data.engine.service.DataDefinitionRequest.toDelete;
+import static com.liferay.data.engine.service.DataDefinitionRequest.toGet;
+import static com.liferay.data.engine.service.DataDefinitionRequest.toSave;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
@@ -38,7 +45,6 @@ import com.liferay.data.engine.service.DataDefinitionDeleteRequest;
 import com.liferay.data.engine.service.DataDefinitionGetRequest;
 import com.liferay.data.engine.service.DataDefinitionGetResponse;
 import com.liferay.data.engine.service.DataDefinitionLocalService;
-import com.liferay.data.engine.service.DataDefinitionRequest;
 import com.liferay.data.engine.service.DataDefinitionSaveRequest;
 import com.liferay.data.engine.service.DataDefinitionSaveResponse;
 import com.liferay.portal.kernel.model.Group;
@@ -86,23 +92,20 @@ public class DataDefinitionLocalServiceTest {
 		};
 
 
-		DataDefinitionField dataDefinitionField =
-				DataDefinitionField.buildField()
-					.called("name")
-					.ofType(DataDefinitionColumnType.STRING)
-					.withLabels(expectedNameLabels)
-					.done();
+		DataDefinitionField dataDefinitionField = buildField()
+			.called("name")
+			.ofType(DataDefinitionColumnType.STRING)
+			.withLabels(expectedNameLabels)
+			.done();
 
-		DataDefinition dataDefinition =
-				DataDefinition.buildDefinition()
-					.withName(LocaleUtil.US, "Definition 1")
-					.ofStorageType("json")
-					.withFields(Arrays.asList(dataDefinitionField))
-					.done();
+		DataDefinition dataDefinition = buildDefinition()
+			.withName(LocaleUtil.US, "Definition 1")
+			.ofStorageType("json")
+			.withFields(Arrays.asList(dataDefinitionField))
+			.done();
 
-		DataDefinitionSaveRequest dataDefinitionSaveRequest =
-			DataDefinitionRequest
-				.toSave(dataDefinition)
+		DataDefinitionSaveRequest dataDefinitionSaveRequest = 
+			toSave(dataDefinition)
 				.onBehalfOf(_user.getUserId())
 				.inGroup(_group.getGroupId())
 				.done();
@@ -111,16 +114,19 @@ public class DataDefinitionLocalServiceTest {
 		DataDefinitionSaveResponse dataDefinitionSaveResponse =
 			_dataDefinitionLocalService.save(dataDefinitionSaveRequest);
 
-		long dataDefinitionId =
-			dataDefinitionSaveResponse.getDataDefinitionId();
+		long dataDefinitionId = 
+				dataDefinitionSaveResponse.getDataDefinitionId();
 
-		DataDefinitionDeleteRequest dataDefinitionDeleteRequest =
-			DataDefinitionRequest.toDelete().byId(dataDefinitionId).done();
+		DataDefinitionDeleteRequest dataDefinitionDeleteRequest = 
+			toDelete()
+				.byId(dataDefinitionId)
+				.done();
 
 		_dataDefinitionLocalService.delete(dataDefinitionDeleteRequest);
 
-		DataDefinitionGetRequest dataDefinitionGetRequest =
-			DataDefinitionRequest.toGet().byId(dataDefinitionId).done();
+		DataDefinitionGetRequest dataDefinitionGetRequest = toGet()
+				.byId(dataDefinitionId)
+				.done();
 
 		_dataDefinitionLocalService.get(dataDefinitionGetRequest);
 	}
@@ -135,57 +141,51 @@ public class DataDefinitionLocalServiceTest {
 		};
 
 
-		DataDefinitionField dataDefinitionField1 =
-				DataDefinitionField.buildField()
-					.called("column1")
-					.ofType(DataDefinitionColumnType.STRING)
-					.withLabels(column1Labels)
-					.done();
+		DataDefinitionField dataDefinitionField1 = buildField()
+			.called("column1")
+			.ofType(DataDefinitionColumnType.STRING)
+			.withLabels(column1Labels)
+			.done();
 
-		DataDefinitionField dataDefinitionField2 =
-				DataDefinitionField.buildField()
-					.called("column2")
-					.ofType(DataDefinitionColumnType.NUMBER)
-					.withLabel("en_US", "Column 2")
-					.done();
+		DataDefinitionField dataDefinitionField2 = buildField()
+			.called("column2")
+			.ofType(DataDefinitionColumnType.NUMBER)
+			.withLabel("en_US", "Column 2")
+			.done();
 
-		DataDefinitionField dataDefinitionField3 =
-				DataDefinitionField.buildField()
-					.called("column3")
-					.ofType(DataDefinitionColumnType.DATE)
-					.withLabel(Locale.US, "Column 3")
-					.done();
+		DataDefinitionField dataDefinitionField3 = buildField()
+			.called("column3")
+			.ofType(DataDefinitionColumnType.DATE)
+			.withLabel(Locale.US, "Column 3")
+			.done();
 		
-		DataDefinition expectedDataDefinition =
-				DataDefinition.buildDefinition()
-					.withName(LocaleUtil.US, "Definition 2")
-					.ofStorageType("json")
-					.withFields(
-							dataDefinitionField1, 
-							dataDefinitionField2,
-							dataDefinitionField3)
-					.done();
+		DataDefinition expectedDataDefinition = 
+			buildDefinition()
+				.withName(LocaleUtil.US, "Definition 2")
+				.ofStorageType("json")
+				.withFields(
+						dataDefinitionField1, 
+						dataDefinitionField2,
+						dataDefinitionField3)
+				.done();
 
-		DataDefinitionSaveRequest dataDefinitionSaveRequest =
-				DataDefinitionRequest
-					.toSave(expectedDataDefinition)
-					.onBehalfOf(_user.getUserId())
-					.inGroup(_group.getGroupId())
-					.done();
+		DataDefinitionSaveRequest dataDefinitionSaveRequest = 
+			toSave(expectedDataDefinition)
+				.onBehalfOf(_user.getUserId())
+				.inGroup(_group.getGroupId())
+				.done();
 
 		DataDefinitionSaveResponse dataDefinitionSaveResponse =
 			_dataDefinitionLocalService.save(dataDefinitionSaveRequest);
 
-		long dataDefinitionId =
-			dataDefinitionSaveResponse.getDataDefinitionId();
+		long dataDefinitionId = dataDefinitionSaveResponse.getDataDefinitionId();
 
-		expectedDataDefinition = DataDefinition
-				.buildDefinitionFrom(expectedDataDefinition)
-				.withId(dataDefinitionId)
-				.done();
+		expectedDataDefinition = buildDefinitionFrom(expectedDataDefinition)
+			.withId(dataDefinitionId)
+			.done();
 
 		DataDefinitionGetRequest dataDefinitionGetRequest =
-			DataDefinitionRequest.toGet().byId(dataDefinitionId).done();
+			toGet().byId(dataDefinitionId).done();
 
 		DataDefinitionGetResponse dataDefinitionGetResponse =
 			_dataDefinitionLocalService.get(dataDefinitionGetRequest);
@@ -195,7 +195,7 @@ public class DataDefinitionLocalServiceTest {
 			dataDefinitionGetResponse.getDataDefinition());
 
 		DataDefinitionDeleteRequest dataDefinitionDeleteRequest =
-			DataDefinitionRequest.toDelete().byId(dataDefinitionId).done();
+			toDelete().byId(dataDefinitionId).done();
 
 		_dataDefinitionLocalService.delete(dataDefinitionDeleteRequest);
 	}
@@ -210,55 +210,50 @@ public class DataDefinitionLocalServiceTest {
 		};
 
 
-		DataDefinitionField expectedDataDefinitionField1 =
-				DataDefinitionField.buildField()
-					.called("name")
-					.ofType(DataDefinitionColumnType.STRING)
-					.withLabels(expectedNameLabels)
-					.done();
+		DataDefinitionField expectedDataDefinitionField1 = buildField()
+			.called("name")
+			.ofType(DataDefinitionColumnType.STRING)
+			.withLabels(expectedNameLabels)
+			.done();
 
-		DataDefinitionField expectedDataDefinitionField2 =
-				DataDefinitionField.buildField()
-					.called("email")
-					.ofType(DataDefinitionColumnType.STRING)
-					.withLabel("pt_BR", "Endereço de Email")
-					.withLabel("en_US", "Email Address")
-					.done();
+		DataDefinitionField expectedDataDefinitionField2 = buildField()
+			.called("email")
+			.ofType(DataDefinitionColumnType.STRING)
+			.withLabel("pt_BR", "Endereço de Email")
+			.withLabel("en_US", "Email Address")
+			.done();
 
 	
-		DataDefinition expectedDataDefinition =
-				DataDefinition.buildDefinition()
-					.withName(LocaleUtil.US, "Contact")
-					.withName(LocaleUtil.BRAZIL, "Contato")
-					.withDescription(LocaleUtil.US, "Contact description")
-					.withDescription(LocaleUtil.BRAZIL, "Descrição do contato")
-					.ofStorageType("json")
-					.withFields(
-							expectedDataDefinitionField1, 
-							expectedDataDefinitionField2)
-					.done();
+		DataDefinition expectedDataDefinition = buildDefinition()
+			.withName(LocaleUtil.US, "Contact")
+			.withName(LocaleUtil.BRAZIL, "Contato")
+			.withDescription(LocaleUtil.US, "Contact description")
+			.withDescription(LocaleUtil.BRAZIL, "Descrição do contato")
+			.ofStorageType("json")
+			.withFields(
+					expectedDataDefinitionField1, 
+					expectedDataDefinitionField2)
+			.done();
 		
-		DataDefinitionSaveRequest dataDefinitionSaveRequest =
-				DataDefinitionRequest
-					.toSave(expectedDataDefinition)
-					.onBehalfOf(_user.getUserId())
-					.inGroup(_group.getGroupId())
-					.done();
+		DataDefinitionSaveRequest dataDefinitionSaveRequest = 
+			toSave(expectedDataDefinition)
+				.onBehalfOf(_user.getUserId())
+				.inGroup(_group.getGroupId())
+				.done();
 
 
 		DataDefinitionSaveResponse dataDefinitionSaveResponse =
 			_dataDefinitionLocalService.save(dataDefinitionSaveRequest);
 
-		long dataDefinitionId =
-			dataDefinitionSaveResponse.getDataDefinitionId();
+		long dataDefinitionId = dataDefinitionSaveResponse.getDataDefinitionId();
 
 		expectedDataDefinition = DataDefinition
-				.buildDefinitionFrom(expectedDataDefinition)
-				.withId(dataDefinitionId)
-				.done();
+			.buildDefinitionFrom(expectedDataDefinition)
+			.withId(dataDefinitionId)
+			.done();
 
 		DataDefinitionGetRequest dataDefinitionGetRequest =
-			DataDefinitionRequest.toGet().byId(dataDefinitionId).done();
+			toGet().byId(dataDefinitionId).done();
 
 		DataDefinitionGetResponse dataDefinitionGetResponse =
 			_dataDefinitionLocalService.get(dataDefinitionGetRequest);
@@ -280,7 +275,7 @@ public class DataDefinitionLocalServiceTest {
 		Assert.assertTrue(resourcePermission.hasActionId(ActionKeys.VIEW));
 
 		DataDefinitionDeleteRequest dataDefinitionDeleteRequest =
-			DataDefinitionRequest.toDelete().byId(dataDefinitionId).done();
+			toDelete().byId(dataDefinitionId).done();
 
 		_dataDefinitionLocalService.delete(dataDefinitionDeleteRequest);
 	}
@@ -295,7 +290,7 @@ public class DataDefinitionLocalServiceTest {
 		};
 
 		DataDefinitionField dataDefinitionField1 =
-				DataDefinitionField.buildField()
+				buildField()
 					.called("title")
 					.ofType(DataDefinitionColumnType.STRING)
 					.withLabels(expectedTitleLabels)
@@ -303,7 +298,7 @@ public class DataDefinitionLocalServiceTest {
 					.done();
 		
 		DataDefinition expectedDataDefinition =
-				DataDefinition.buildDefinition()
+				buildDefinition()
 					.withName(LocaleUtil.US, "Story")
 					.withName(LocaleUtil.BRAZIL, "Estória")
 					.ofStorageType("json")
@@ -311,8 +306,7 @@ public class DataDefinitionLocalServiceTest {
 					.done();
 		
 		DataDefinitionSaveRequest dataDefinitionSaveRequest =
-				DataDefinitionRequest
-					.toSave(expectedDataDefinition)
+				toSave(expectedDataDefinition)
 					.onBehalfOf(_user.getUserId())
 					.inGroup(_group.getGroupId())
 					.done();
@@ -320,16 +314,14 @@ public class DataDefinitionLocalServiceTest {
 		DataDefinitionSaveResponse dataDefinitionSaveResponse =
 			_dataDefinitionLocalService.save(dataDefinitionSaveRequest);
 
-		long dataDefinitionId =
-			dataDefinitionSaveResponse.getDataDefinitionId();
+		long dataDefinitionId = 
+				dataDefinitionSaveResponse.getDataDefinitionId();
 
-		expectedDataDefinition = DataDefinition
-				.buildDefinitionFrom(expectedDataDefinition)
+		expectedDataDefinition = buildDefinitionFrom(expectedDataDefinition)
 				.withId(dataDefinitionId)
 				.done();
 
-		DataDefinitionField dataDefinitionField2 =
-				DataDefinitionField.buildField()
+		DataDefinitionField dataDefinitionField2 = buildField()
 					.called("description")
 					.ofType(DataDefinitionColumnType.STRING)
 					.withLabel("pt_BR", "Descrição")
@@ -337,8 +329,7 @@ public class DataDefinitionLocalServiceTest {
 					.localizable()
 					.done();
 
-		expectedDataDefinition =
-				DataDefinition.buildDefinition()
+		expectedDataDefinition = buildDefinition()
 					.withId(dataDefinitionId)
 					.withName(LocaleUtil.US, "Story")
 					.withName(LocaleUtil.BRAZIL, "Estória")
@@ -347,8 +338,7 @@ public class DataDefinitionLocalServiceTest {
 					.done();
 
 		dataDefinitionSaveRequest =
-				DataDefinitionRequest
-					.toSave(expectedDataDefinition)
+				toSave(expectedDataDefinition)
 					.onBehalfOf(_user.getUserId())
 					.inGroup(_group.getGroupId())
 					.done();
@@ -356,7 +346,7 @@ public class DataDefinitionLocalServiceTest {
 		_dataDefinitionLocalService.save(dataDefinitionSaveRequest);
 
 		DataDefinitionGetRequest dataDefinitionGetRequest =
-			DataDefinitionRequest.toGet().byId(dataDefinitionId).done();
+			toGet().byId(dataDefinitionId).done();
 
 		DataDefinitionGetResponse dataDefinitionGetResponse =
 			_dataDefinitionLocalService.get(dataDefinitionGetRequest);
@@ -367,7 +357,7 @@ public class DataDefinitionLocalServiceTest {
 		Assert.assertEquals(expectedDataDefinition, dataDefinition);
 
 		DataDefinitionDeleteRequest dataDefinitionDeleteRequest =
-			DataDefinitionRequest.toDelete().byId(dataDefinitionId).done();
+			toDelete().byId(dataDefinitionId).done();
 
 		_dataDefinitionLocalService.delete(dataDefinitionDeleteRequest);
 
@@ -375,79 +365,67 @@ public class DataDefinitionLocalServiceTest {
 	
 	@Test
 	public void testUpdateFields() throws Exception {
-		DataDefinitionField dataDefinitionField1 =
-				DataDefinitionField.buildField()
-					.called("title")
-					.ofType(DataDefinitionColumnType.STRING)
-					.localizable()
-					.done();
-
-		DataDefinitionField dataDefinitionField2 =
-				DataDefinitionField.buildField()
-					.called("deleteMe")
-					.ofType(DataDefinitionColumnType.STRING)
-					.localizable()
-					.done();
 		
 		DataDefinition expectedDataDefinition =
-				DataDefinition.buildDefinition()
-					.withName(LocaleUtil.US, "Story")
-					.withName(LocaleUtil.BRAZIL, "Estória")
-					.ofStorageType("json")
-					.withFields(dataDefinitionField1, dataDefinitionField2)
-					.done();
+			buildDefinition()
+				.withName(LocaleUtil.US, "Story")
+				.withName(LocaleUtil.BRAZIL, "Estória")
+				.ofStorageType("json")
+				.withFields(
+					DataDefinitionField.buildField()
+						.called("title")
+						.ofType(DataDefinitionColumnType.STRING)
+						.localizable()
+						.done(),
+					DataDefinitionField.buildField()
+						.called("deleteMe")
+						.ofType(DataDefinitionColumnType.STRING)
+						.localizable()
+						.done())
+				.done();
 		
-		DataDefinitionSaveRequest dataDefinitionSaveRequest =
-				DataDefinitionRequest
-					.toSave(expectedDataDefinition)
+		long id = _dataDefinitionLocalService.save(
+				toSave(expectedDataDefinition)
 					.onBehalfOf(_user.getUserId())
 					.inGroup(_group.getGroupId())
-					.done();
-		
-		long id = 
-				_dataDefinitionLocalService.save(dataDefinitionSaveRequest).getDataDefinitionId();
+					.done()
+			).getDataDefinitionId();
 
 		DataDefinition dataDefinitionFromStorage =
 				_dataDefinitionLocalService.get(
-					DataDefinitionRequest.toGet().byId(id).done()
+					toGet().byId(id).done()
 				).getDataDefinition();
 
 		DataDefinitionField titleFiled = expectedDataDefinition.getField("title");
-		titleFiled = 
-				DataDefinitionField.buildFieldFrom(titleFiled)
+		titleFiled = buildFieldFrom(titleFiled)
 					.withTip(LocaleUtil.US, "Some tip")
 					.done();
 		
-		expectedDataDefinition = DataDefinition.buildDefinitionFrom(dataDefinitionFromStorage)
+		expectedDataDefinition = buildDefinitionFrom(dataDefinitionFromStorage)
 				.withoutFields()
 				.withFields(titleFiled)
 				.done();
 
-		dataDefinitionSaveRequest =
-				DataDefinitionRequest
-					.toSave(expectedDataDefinition)
-					.onBehalfOf(_user.getUserId())
-					.inGroup(_group.getGroupId())
-					.done();
-		
-		long newId = 
-				_dataDefinitionLocalService.save(dataDefinitionSaveRequest).getDataDefinitionId();
+		long newId = _dataDefinitionLocalService.save(
+						toSave(expectedDataDefinition)
+							.onBehalfOf(_user.getUserId())
+							.inGroup(_group.getGroupId())
+							.done()
+					).getDataDefinitionId();
 
 		assertEquals(id, newId);
 		
-		dataDefinitionFromStorage =
-				_dataDefinitionLocalService.get(
-					DataDefinitionRequest.toGet().byId(id).done()
-				).getDataDefinition();
+		dataDefinitionFromStorage = _dataDefinitionLocalService.get(
+				toGet().byId(id).done()
+			).getDataDefinition();
 		
 		assertEquals(1, dataDefinitionFromStorage.getFields().size());
 		assertNull(dataDefinitionFromStorage.getField("deleteMe"));
 		assertEquals("Some tip", dataDefinitionFromStorage.getField("title").getTip(Locale.US));
 
-		DataDefinitionDeleteRequest dataDefinitionDeleteRequest =
-				DataDefinitionRequest.toDelete().byId(id).done();
-
-			_dataDefinitionLocalService.delete(dataDefinitionDeleteRequest);
+		_dataDefinitionLocalService.delete(
+				toDelete().byId(id).done()
+			);
 
 	}
 
