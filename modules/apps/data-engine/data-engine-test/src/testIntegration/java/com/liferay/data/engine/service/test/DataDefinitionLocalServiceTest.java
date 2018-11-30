@@ -38,6 +38,7 @@ import com.liferay.data.engine.service.DataDefinitionDeleteRequest;
 import com.liferay.data.engine.service.DataDefinitionGetRequest;
 import com.liferay.data.engine.service.DataDefinitionGetResponse;
 import com.liferay.data.engine.service.DataDefinitionLocalService;
+import com.liferay.data.engine.service.DataDefinitionRequest;
 import com.liferay.data.engine.service.DataDefinitionSaveRequest;
 import com.liferay.data.engine.service.DataDefinitionSaveResponse;
 import com.liferay.portal.kernel.model.Group;
@@ -100,11 +101,12 @@ public class DataDefinitionLocalServiceTest {
 					.done();
 
 		DataDefinitionSaveRequest dataDefinitionSaveRequest =
-				DataDefinitionSaveRequest.requestTo()
-					.save(dataDefinition)
-					.onBehalfOf(_user.getUserId())
-					.inGroup(_group.getGroupId())
-					.done();
+			DataDefinitionRequest
+				.toSave(dataDefinition)
+				.onBehalfOf(_user.getUserId())
+				.inGroup(_group.getGroupId())
+				.done();
+
 
 		DataDefinitionSaveResponse dataDefinitionSaveResponse =
 			_dataDefinitionLocalService.save(dataDefinitionSaveRequest);
@@ -113,12 +115,12 @@ public class DataDefinitionLocalServiceTest {
 			dataDefinitionSaveResponse.getDataDefinitionId();
 
 		DataDefinitionDeleteRequest dataDefinitionDeleteRequest =
-			DataDefinitionDeleteRequest.requestTo().deleteById(dataDefinitionId).done();
+			DataDefinitionRequest.toDelete().byId(dataDefinitionId).done();
 
 		_dataDefinitionLocalService.delete(dataDefinitionDeleteRequest);
 
 		DataDefinitionGetRequest dataDefinitionGetRequest =
-			DataDefinitionGetRequest.requestTo().getById(dataDefinitionId).done();
+			DataDefinitionRequest.toGet().byId(dataDefinitionId).done();
 
 		_dataDefinitionLocalService.get(dataDefinitionGetRequest);
 	}
@@ -165,8 +167,8 @@ public class DataDefinitionLocalServiceTest {
 					.done();
 
 		DataDefinitionSaveRequest dataDefinitionSaveRequest =
-				DataDefinitionSaveRequest.requestTo()
-					.save(expectedDataDefinition)
+				DataDefinitionRequest
+					.toSave(expectedDataDefinition)
 					.onBehalfOf(_user.getUserId())
 					.inGroup(_group.getGroupId())
 					.done();
@@ -180,7 +182,7 @@ public class DataDefinitionLocalServiceTest {
 		expectedDataDefinition.setPrimaryKeyObj(dataDefinitionId);
 
 		DataDefinitionGetRequest dataDefinitionGetRequest =
-			DataDefinitionGetRequest.requestTo().getById(dataDefinitionId).done();
+			DataDefinitionRequest.toGet().byId(dataDefinitionId).done();
 
 		DataDefinitionGetResponse dataDefinitionGetResponse =
 			_dataDefinitionLocalService.get(dataDefinitionGetRequest);
@@ -190,7 +192,7 @@ public class DataDefinitionLocalServiceTest {
 			dataDefinitionGetResponse.getDataDefinition());
 
 		DataDefinitionDeleteRequest dataDefinitionDeleteRequest =
-			DataDefinitionDeleteRequest.requestTo().deleteById(dataDefinitionId).done();
+			DataDefinitionRequest.toDelete().byId(dataDefinitionId).done();
 
 		_dataDefinitionLocalService.delete(dataDefinitionDeleteRequest);
 	}
@@ -234,8 +236,8 @@ public class DataDefinitionLocalServiceTest {
 					.done();
 		
 		DataDefinitionSaveRequest dataDefinitionSaveRequest =
-				DataDefinitionSaveRequest.requestTo()
-					.save(expectedDataDefinition)
+				DataDefinitionRequest
+					.toSave(expectedDataDefinition)
 					.onBehalfOf(_user.getUserId())
 					.inGroup(_group.getGroupId())
 					.done();
@@ -250,7 +252,7 @@ public class DataDefinitionLocalServiceTest {
 		expectedDataDefinition.setPrimaryKeyObj(dataDefinitionId);
 
 		DataDefinitionGetRequest dataDefinitionGetRequest =
-			DataDefinitionGetRequest.requestTo().getById(dataDefinitionId).done();
+			DataDefinitionRequest.toGet().byId(dataDefinitionId).done();
 
 		DataDefinitionGetResponse dataDefinitionGetResponse =
 			_dataDefinitionLocalService.get(dataDefinitionGetRequest);
@@ -272,7 +274,7 @@ public class DataDefinitionLocalServiceTest {
 		Assert.assertTrue(resourcePermission.hasActionId(ActionKeys.VIEW));
 
 		DataDefinitionDeleteRequest dataDefinitionDeleteRequest =
-			DataDefinitionDeleteRequest.requestTo().deleteById(dataDefinitionId).done();
+			DataDefinitionRequest.toDelete().byId(dataDefinitionId).done();
 
 		_dataDefinitionLocalService.delete(dataDefinitionDeleteRequest);
 	}
@@ -303,8 +305,8 @@ public class DataDefinitionLocalServiceTest {
 					.done();
 		
 		DataDefinitionSaveRequest dataDefinitionSaveRequest =
-				DataDefinitionSaveRequest.requestTo()
-					.save(expectedDataDefinition)
+				DataDefinitionRequest
+					.toSave(expectedDataDefinition)
 					.onBehalfOf(_user.getUserId())
 					.inGroup(_group.getGroupId())
 					.done();
@@ -336,8 +338,8 @@ public class DataDefinitionLocalServiceTest {
 					.done();
 
 		dataDefinitionSaveRequest =
-				DataDefinitionSaveRequest.requestTo()
-					.save(expectedDataDefinition)
+				DataDefinitionRequest
+					.toSave(expectedDataDefinition)
 					.onBehalfOf(_user.getUserId())
 					.inGroup(_group.getGroupId())
 					.done();
@@ -345,7 +347,7 @@ public class DataDefinitionLocalServiceTest {
 		_dataDefinitionLocalService.save(dataDefinitionSaveRequest);
 
 		DataDefinitionGetRequest dataDefinitionGetRequest =
-			DataDefinitionGetRequest.requestTo().getById(dataDefinitionId).done();
+			DataDefinitionRequest.toGet().byId(dataDefinitionId).done();
 
 		DataDefinitionGetResponse dataDefinitionGetResponse =
 			_dataDefinitionLocalService.get(dataDefinitionGetRequest);
@@ -356,7 +358,7 @@ public class DataDefinitionLocalServiceTest {
 		Assert.assertEquals(expectedDataDefinition, dataDefinition);
 
 		DataDefinitionDeleteRequest dataDefinitionDeleteRequest =
-			DataDefinitionDeleteRequest.requestTo().deleteById(dataDefinitionId).done();
+			DataDefinitionRequest.toDelete().byId(dataDefinitionId).done();
 
 		_dataDefinitionLocalService.delete(dataDefinitionDeleteRequest);
 
@@ -387,8 +389,8 @@ public class DataDefinitionLocalServiceTest {
 					.done();
 		
 		DataDefinitionSaveRequest dataDefinitionSaveRequest =
-				DataDefinitionSaveRequest.requestTo()
-					.save(expectedDataDefinition)
+				DataDefinitionRequest
+					.toSave(expectedDataDefinition)
 					.onBehalfOf(_user.getUserId())
 					.inGroup(_group.getGroupId())
 					.done();
@@ -398,7 +400,7 @@ public class DataDefinitionLocalServiceTest {
 
 		DataDefinition dataDefinitionFromStorage =
 				_dataDefinitionLocalService.get(
-					DataDefinitionGetRequest.requestTo().getById(id).done()
+					DataDefinitionRequest.toGet().byId(id).done()
 				).getDataDefinition();
 
 		DataDefinitionField titleFiled = expectedDataDefinition.getField("title");
@@ -413,8 +415,8 @@ public class DataDefinitionLocalServiceTest {
 				.done();
 
 		dataDefinitionSaveRequest =
-				DataDefinitionSaveRequest.requestTo()
-					.save(expectedDataDefinition)
+				DataDefinitionRequest
+					.toSave(expectedDataDefinition)
 					.onBehalfOf(_user.getUserId())
 					.inGroup(_group.getGroupId())
 					.done();
@@ -426,15 +428,18 @@ public class DataDefinitionLocalServiceTest {
 		
 		dataDefinitionFromStorage =
 				_dataDefinitionLocalService.get(
-					DataDefinitionGetRequest.requestTo().getById(id).done()
+					DataDefinitionRequest.toGet().byId(id).done()
 				).getDataDefinition();
 		
 		assertEquals(1, dataDefinitionFromStorage.getFields().size());
 		assertNull(dataDefinitionFromStorage.getField("deleteMe"));
 		assertEquals("Some tip", dataDefinitionFromStorage.getField("title").getTip(Locale.US));
 
-		
-		
+		DataDefinitionDeleteRequest dataDefinitionDeleteRequest =
+				DataDefinitionRequest.toDelete().byId(id).done();
+
+			_dataDefinitionLocalService.delete(dataDefinitionDeleteRequest);
+
 	}
 
 

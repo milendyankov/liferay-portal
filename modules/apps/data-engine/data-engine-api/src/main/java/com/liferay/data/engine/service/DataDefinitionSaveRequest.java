@@ -33,22 +33,16 @@ public final class DataDefinitionSaveRequest {
 		return _userId;
 	}
 
-	public static Builder requestTo() {
-		return new Builder();
-	}
-
 	public static final class Builder {
 
+		Builder (DataDefinition dataDefinition) {
+			_dataDefinitionSaveRequest._dataDefinition = dataDefinition;
+		}
 
 		public DataDefinitionSaveRequest done() {
 			return _dataDefinitionSaveRequest;
 		}
 
-		public Builder save(DataDefinition dataDefinition) {
-			_dataDefinitionSaveRequest._dataDefinition = dataDefinition;
-
-			return this;
-		}
 
 		public Builder onBehalfOf(long userId) {
 			_dataDefinitionSaveRequest._userId = userId;

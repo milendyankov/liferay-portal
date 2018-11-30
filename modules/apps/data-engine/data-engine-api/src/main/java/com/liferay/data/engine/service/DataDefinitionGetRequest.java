@@ -23,13 +23,13 @@ public final class DataDefinitionGetRequest {
 		return _dataDefinitionId;
 	}
 
-	public static Builder requestTo() {
-		return new Builder();
-	}
 
 	public static final class Builder {
 
-		public Builder getById(long dataDefinitionId) {
+		Builder() {
+		}
+		
+		public Builder byId(long dataDefinitionId) {
 			_dataDefinitionGetRequest._dataDefinitionId = dataDefinitionId;
 
 			return this;

@@ -23,14 +23,12 @@ public final class DataDefinitionDeleteRequest {
 		return _dataDefinitionId;
 	}
 	
-	public static Builder requestTo() {
-		return new Builder();
-	}
-
 	public static final class Builder {
+		
+		Builder() {
+		}
 
-
-		public Builder deleteById (long dataDefinitionId) {
+		public Builder byId (long dataDefinitionId) {
 			_dataDefinitionDeleteRequest._dataDefinitionId = dataDefinitionId;
 			return this;
 		}
