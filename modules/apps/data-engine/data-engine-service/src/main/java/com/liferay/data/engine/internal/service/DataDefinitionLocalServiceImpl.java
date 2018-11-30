@@ -30,6 +30,7 @@ import com.liferay.data.engine.exception.DataDefinitionFieldsDeserializerExcepti
 import com.liferay.data.engine.exception.DataDefinitionFieldsSerializerException;
 import com.liferay.data.engine.internal.io.DataDefinitionFieldsDeserializerTracker;
 import com.liferay.data.engine.internal.io.DataDefinitionFieldsSerializerTracker;
+import com.liferay.data.engine.internal.model.InternalDataDefinition;
 import com.liferay.data.engine.io.DataDefinitionFieldsDeserializer;
 import com.liferay.data.engine.io.DataDefinitionFieldsDeserializerApplyRequest;
 import com.liferay.data.engine.io.DataDefinitionFieldsDeserializerApplyResponse;
@@ -43,6 +44,7 @@ import com.liferay.data.engine.service.DataDefinitionDeleteResponse;
 import com.liferay.data.engine.service.DataDefinitionGetRequest;
 import com.liferay.data.engine.service.DataDefinitionGetResponse;
 import com.liferay.data.engine.service.DataDefinitionLocalService;
+import com.liferay.data.engine.service.DataDefinitionPermissionRequest;
 import com.liferay.data.engine.service.DataDefinitionSaveRequest;
 import com.liferay.data.engine.service.DataDefinitionSaveResponse;
 import com.liferay.dynamic.data.lists.model.DDLRecordSet;
@@ -56,11 +58,14 @@ import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ResourceLocalService;
+import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
+import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.permission.ModelPermissions;
@@ -197,6 +202,34 @@ public class DataDefinitionLocalServiceImpl
 			throw new DataDefinitionException(e);
 		}
 	}
+	
+	@Override
+	public boolean hasPermission(DataDefinitionPermissionRequest dataDefinitionPermissionRequest) throws DataDefinitionException {
+
+		long userId = dataDefinitionPermissionRequest.getUserId();
+
+		long groupId = dataDefinitionPermissionRequest.getGroupId();
+
+		long dataDefinitionId = dataDefinitionPermissionRequest.getDataDefinitionId();
+		
+		String action = dataDefinitionPermissionRequest.getAction();
+		
+		try {
+			Group group = groupLocalService.getGroup(groupId);
+				
+			return  _resourcePermissionLocalService.hasResourcePermission(
+						group.getCompanyId(), 
+						InternalDataDefinition.class.getName(), 
+						ResourceConstants.SCOPE_INDIVIDUAL, 
+						String.valueOf(dataDefinitionId), 
+						userLocalService.getUser(userId).getRoleIds(), 
+						action);
+		} catch (PortalException e) {
+			throw new DataDefinitionException(e);
+		}
+		
+	}
+
 
 	protected DDMStructure createDDMStructure(
 			long userId, long groupId, long classNameId,
@@ -368,5 +401,9 @@ public class DataDefinitionLocalServiceImpl
 
 	@Reference(cardinality=ReferenceCardinality.OPTIONAL)
 	protected UserLocalService userLocalService;
+
+	@Reference
+	private ResourcePermissionLocalService _resourcePermissionLocalService;
+
 
 }

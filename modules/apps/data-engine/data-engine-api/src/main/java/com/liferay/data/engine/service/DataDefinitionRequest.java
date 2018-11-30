@@ -16,4 +16,9 @@ public class DataDefinitionRequest {
 	public static DataDefinitionDeleteRequest.Builder deleteRequest () {
 		return new DataDefinitionDeleteRequest.Builder();
 	}
+
+	public static DataDefinitionPermissionRequest.Builder permissionOn (long dataDefinitionId) {
+		return new DataDefinitionPermissionRequest.Builder(dataDefinitionId);
+	}
+
 }

@@ -20,6 +20,7 @@ import static com.liferay.data.engine.model.DataDefinitionField.buildField;
 import static com.liferay.data.engine.model.DataDefinitionField.buildFieldFrom;
 import static com.liferay.data.engine.service.DataDefinitionRequest.deleteRequest;
 import static com.liferay.data.engine.service.DataDefinitionRequest.getRequest;
+import static com.liferay.data.engine.service.DataDefinitionRequest.permissionOn;
 import static com.liferay.data.engine.service.DataDefinitionRequest.saveRequestFor;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -48,14 +49,8 @@ import com.liferay.data.engine.service.DataDefinitionLocalService;
 import com.liferay.data.engine.service.DataDefinitionSaveRequest;
 import com.liferay.data.engine.service.DataDefinitionSaveResponse;
 import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.model.ResourceConstants;
-import com.liferay.portal.kernel.model.ResourcePermission;
-import com.liferay.portal.kernel.model.Role;
-import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
-import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
-import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
@@ -262,17 +257,14 @@ public class DataDefinitionLocalServiceTest {
 			dataDefinitionGetResponse.getDataDefinition();
 
 		Assert.assertEquals(expectedDataDefinition, dataDefinition);
-
-		Role ownerRole = _roleLocalService.getRole(
-			_group.getCompanyId(), RoleConstants.OWNER);
-
-		ResourcePermission resourcePermission =
-			_resourcePermissionLocalService.fetchResourcePermission(
-				_group.getCompanyId(), DataDefinition.class.getName(),
-				ResourceConstants.SCOPE_INDIVIDUAL,
-				String.valueOf(dataDefinitionId), ownerRole.getRoleId());
-
-		Assert.assertTrue(resourcePermission.hasActionId(ActionKeys.VIEW));
+		Assert.assertTrue(_dataDefinitionLocalService.hasPermission(
+				permissionOn(dataDefinition.getDataDefinitionId())
+					.forActor(_user.getUserId())
+					.inGroup(_group.getGroupId())
+					.to(ActionKeys.VIEW)
+					.done()
+			)
+		);
 
 		DataDefinitionDeleteRequest dataDefinitionDeleteRequest =
 			deleteRequest().byId(dataDefinitionId).done();
@@ -372,12 +364,12 @@ public class DataDefinitionLocalServiceTest {
 				.withName(LocaleUtil.BRAZIL, "Estória")
 				.ofStorageType("json")
 				.withFields(
-					DataDefinitionField.buildField()
+					buildField()
 						.called("title")
 						.ofType(DataDefinitionColumnType.STRING)
 						.localizable()
 						.done(),
-					DataDefinitionField.buildField()
+					buildField()
 						.called("deleteMe")
 						.ofType(DataDefinitionColumnType.STRING)
 						.localizable()
@@ -435,12 +427,6 @@ public class DataDefinitionLocalServiceTest {
 
 	@DeleteAfterTestRun
 	private Group _group;
-
-	@Inject(type = ResourcePermissionLocalService.class)
-	private ResourcePermissionLocalService _resourcePermissionLocalService;
-
-	@Inject(type = RoleLocalService.class)
-	private RoleLocalService _roleLocalService;
 
 	@DeleteAfterTestRun
 	private User _user;

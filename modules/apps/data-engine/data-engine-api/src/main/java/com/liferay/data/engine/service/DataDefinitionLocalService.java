@@ -36,4 +36,8 @@ public interface DataDefinitionLocalService {
 			DataDefinitionSaveRequest dataDefinitionSaveRequest)
 		throws DataDefinitionException;
 
+	public boolean hasPermission(
+			DataDefinitionPermissionRequest dataDefinitionPermissionRequest)
+		throws DataDefinitionException;
+
 }
