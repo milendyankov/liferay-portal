@@ -179,7 +179,10 @@ public class DataDefinitionLocalServiceTest {
 		long dataDefinitionId =
 			dataDefinitionSaveResponse.getDataDefinitionId();
 
-		expectedDataDefinition.setPrimaryKeyObj(dataDefinitionId);
+		expectedDataDefinition = DataDefinition
+				.buildDefinitionFrom(expectedDataDefinition)
+				.withId(dataDefinitionId)
+				.done();
 
 		DataDefinitionGetRequest dataDefinitionGetRequest =
 			DataDefinitionRequest.toGet().byId(dataDefinitionId).done();
@@ -249,7 +252,10 @@ public class DataDefinitionLocalServiceTest {
 		long dataDefinitionId =
 			dataDefinitionSaveResponse.getDataDefinitionId();
 
-		expectedDataDefinition.setPrimaryKeyObj(dataDefinitionId);
+		expectedDataDefinition = DataDefinition
+				.buildDefinitionFrom(expectedDataDefinition)
+				.withId(dataDefinitionId)
+				.done();
 
 		DataDefinitionGetRequest dataDefinitionGetRequest =
 			DataDefinitionRequest.toGet().byId(dataDefinitionId).done();
@@ -317,7 +323,10 @@ public class DataDefinitionLocalServiceTest {
 		long dataDefinitionId =
 			dataDefinitionSaveResponse.getDataDefinitionId();
 
-		expectedDataDefinition.setPrimaryKeyObj(dataDefinitionId);
+		expectedDataDefinition = DataDefinition
+				.buildDefinitionFrom(expectedDataDefinition)
+				.withId(dataDefinitionId)
+				.done();
 
 		DataDefinitionField dataDefinitionField2 =
 				DataDefinitionField.buildField()

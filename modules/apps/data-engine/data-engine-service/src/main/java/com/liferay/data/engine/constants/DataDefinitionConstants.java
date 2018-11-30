@@ -23,6 +23,6 @@ public class DataDefinitionConstants {
 		"ADD_DATA_DEFINITION";
 
 	public static final String MODEL_RESOURCE_NAME =
-		"com.liferay.data.engine.model.DataDefinition";
+		"com.liferay.data.engine.internal.model.InternalDataDefinition";
 
 }

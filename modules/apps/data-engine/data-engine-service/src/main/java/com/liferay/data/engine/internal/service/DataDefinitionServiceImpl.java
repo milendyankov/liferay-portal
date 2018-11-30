@@ -16,6 +16,7 @@ package com.liferay.data.engine.internal.service;
 
 import com.liferay.data.engine.constants.DataDefinitionConstants;
 import com.liferay.data.engine.exception.DataDefinitionException;
+import com.liferay.data.engine.internal.model.InternalDataDefinition;
 import com.liferay.data.engine.internal.security.permission.DataEnginePermissionSupport;
 import com.liferay.data.engine.model.DataDefinition;
 import com.liferay.data.engine.service.DataDefinitionDeleteRequest;
@@ -174,11 +175,11 @@ public class DataDefinitionServiceImpl implements DataDefinitionService {
 	}
 
 	@Reference(
-		target = "(model.class.name=com.liferay.data.engine.model.DataDefinition)",
+		target = "(model.class.name=com.liferay.data.engine.internal.model.InternalDataDefinition)",
 		unbind = "-"
 	)
 	protected void setModelResourcePermission(
-		ModelResourcePermission<DataDefinition> modelResourcePermission) {
+		ModelResourcePermission<InternalDataDefinition> modelResourcePermission) {
 
 		_modelResourcePermission = modelResourcePermission;
 	}
@@ -195,6 +196,6 @@ public class DataDefinitionServiceImpl implements DataDefinitionService {
 	private static final Log _log = LogFactoryUtil.getLog(
 		DataDefinitionServiceImpl.class);
 
-	private ModelResourcePermission<DataDefinition> _modelResourcePermission;
+	private ModelResourcePermission<InternalDataDefinition> _modelResourcePermission;
 
 }

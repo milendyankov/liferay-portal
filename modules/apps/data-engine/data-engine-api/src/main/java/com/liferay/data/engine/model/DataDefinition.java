@@ -24,15 +24,13 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.petra.lang.HashUtil;
-import com.liferay.portal.kernel.model.ClassedModel;
 import com.liferay.portal.kernel.util.LocaleUtil;
 
 /**
  * @author Leonardo Barros
  */
-public final class DataDefinition implements ClassedModel, Serializable {
+public final class DataDefinition implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
@@ -78,28 +76,8 @@ public final class DataDefinition implements ClassedModel, Serializable {
 		return Collections.unmodifiableMap(_description);
 	}
 
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public Class<?> getModelClass() {
-		return DataDefinition.class;
-	}
-
-	@Override
-	public String getModelClassName() {
-		return DataDefinition.class.getName();
-	}
-
 	public Map<String, String> getName() {
 		return Collections.unmodifiableMap(_name);
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _dataDefinitionId;
 	}
 
 	public String getStorageType() {
@@ -117,11 +95,6 @@ public final class DataDefinition implements ClassedModel, Serializable {
 		hash = HashUtil.hash(hash, _storageType.hashCode());
 
 		return HashUtil.hash(hash, _columns.hashCode());
-	}
-
-	@Override
-	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
-		_dataDefinitionId = ((Long)primaryKeyObj).longValue();
 	}
 
 	public static Builder buildDefinition() {

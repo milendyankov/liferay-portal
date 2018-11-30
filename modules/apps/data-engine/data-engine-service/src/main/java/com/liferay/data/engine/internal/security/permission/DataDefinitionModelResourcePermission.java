@@ -14,7 +14,13 @@
 
 package com.liferay.data.engine.internal.security.permission;
 
+import java.util.Collections;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 import com.liferay.data.engine.constants.DataDefinitionConstants;
+import com.liferay.data.engine.internal.model.InternalDataDefinition;
 import com.liferay.data.engine.model.DataDefinition;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
@@ -24,25 +30,20 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 
-import java.util.Collections;
-
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Leonardo Barros
  */
 @Component(
 	immediate = true,
-	property = "model.class.name=com.liferay.data.engine.model.DataDefinition",
+	property = "model.class.name=com.liferay.data.engine.internal.model.InternalDataDefinition",
 	service = ModelResourcePermission.class
 )
 public class DataDefinitionModelResourcePermission
-	implements ModelResourcePermission<DataDefinition> {
+	implements ModelResourcePermission<InternalDataDefinition> {
 
 	@Override
 	public void check(
-			PermissionChecker permissionChecker, DataDefinition dataDefinition,
+			PermissionChecker permissionChecker, InternalDataDefinition dataDefinition,
 			String actionId)
 		throws PortalException {
 
@@ -59,17 +60,19 @@ public class DataDefinitionModelResourcePermission
 			String actionId)
 		throws PortalException {
 
-		DataDefinition dataDefinition = DataDefinition.buildDefinition()
+		InternalDataDefinition dataDefinition = new InternalDataDefinition(
+			DataDefinition.buildDefinition()
 				.withId(primaryKey)
 				.withFields(Collections.emptyList())
-				.done();
+				.done()
+		);
 		
 		check(permissionChecker, dataDefinition, actionId);
 	}
 
 	@Override
 	public boolean contains(
-			PermissionChecker permissionChecker, DataDefinition dataDefinition,
+			PermissionChecker permissionChecker, InternalDataDefinition dataDefinition,
 			String actionId)
 		throws PortalException {
 
@@ -95,10 +98,12 @@ public class DataDefinitionModelResourcePermission
 			String actionId)
 		throws PortalException {
 		
-		DataDefinition dataDefinition = DataDefinition.buildDefinition()
+		InternalDataDefinition dataDefinition = new InternalDataDefinition(
+			DataDefinition.buildDefinition()
 				.withId(primaryKey)
 				.withFields(Collections.emptyList())
-				.done();
+				.done()
+		);
 
 		return contains(permissionChecker, dataDefinition, actionId);
 	}

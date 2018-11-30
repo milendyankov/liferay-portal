@@ -15,7 +15,6 @@
 package com.liferay.data.engine.model;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
