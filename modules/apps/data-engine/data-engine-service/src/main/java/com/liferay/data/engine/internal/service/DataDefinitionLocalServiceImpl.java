@@ -291,7 +291,7 @@ public class DataDefinitionLocalServiceImpl
 		DataDefinitionFieldsSerializerApplyRequest
 			dataDefinitionFieldsSerializerApplyRequest =
 				DataDefinitionFieldsSerializerApplyRequest.Builder.of(
-					dataDefinition.getColumns());
+					dataDefinition.getFields());
 
 		DataDefinitionFieldsSerializerApplyResponse
 			dataDefinitionFieldsSerializerApplyResponse =

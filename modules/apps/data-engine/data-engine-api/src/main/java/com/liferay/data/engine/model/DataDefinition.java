@@ -59,8 +59,15 @@ public final class DataDefinition implements ClassedModel, Serializable {
 		return false;
 	}
 
-	public List<DataDefinitionField> getColumns() {
+	public List<DataDefinitionField> getFields() {
 		return Collections.unmodifiableList(_columns);
+	}
+
+	public DataDefinitionField getField(String name) {
+		return _columns.stream()
+				.filter(c -> name.equals(c.getName()))
+				.findFirst()
+				.orElse(null);
 	}
 
 	public long getDataDefinitionId() {
@@ -120,8 +127,21 @@ public final class DataDefinition implements ClassedModel, Serializable {
 	public static Builder buildDefinition() {
 		return new Builder();
 	}
-	
+
+	public static Builder buildDefinitionFrom (DataDefinition definition) {
+		return new Builder(definition);
+	}
+
 	public static final class Builder {
+		
+		public Builder() {
+			_dataDefinition = new DataDefinition();
+		}
+
+		public Builder(DataDefinition definition) {
+			// TODO deep clone instead of reference  
+			_dataDefinition = definition;
+		}
 
 		public DataDefinition done() {
 			return _dataDefinition;
@@ -182,8 +202,20 @@ public final class DataDefinition implements ClassedModel, Serializable {
 			return this;
 		}
 
+		public Builder withoutFields(DataDefinitionField... columns) {
+			_dataDefinition._columns.removeAll(Arrays.asList(columns));
 
-		private final DataDefinition _dataDefinition = new DataDefinition();
+			return this;
+		}
+		
+		public Builder withoutFields() {
+			_dataDefinition._columns.clear();
+
+			return this;
+		}
+
+
+		private final DataDefinition _dataDefinition;
 
 	}
 

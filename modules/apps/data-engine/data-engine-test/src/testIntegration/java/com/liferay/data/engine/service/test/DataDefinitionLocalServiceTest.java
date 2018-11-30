@@ -14,6 +14,9 @@
 
 package com.liferay.data.engine.service.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
@@ -357,6 +360,81 @@ public class DataDefinitionLocalServiceTest {
 
 		_dataDefinitionLocalService.delete(dataDefinitionDeleteRequest);
 
+	}
+	
+	@Test
+	public void testUpdateFields() throws Exception {
+		DataDefinitionField dataDefinitionField1 =
+				DataDefinitionField.buildField()
+					.called("title")
+					.ofType(DataDefinitionColumnType.STRING)
+					.localizable()
+					.done();
+
+		DataDefinitionField dataDefinitionField2 =
+				DataDefinitionField.buildField()
+					.called("deleteMe")
+					.ofType(DataDefinitionColumnType.STRING)
+					.localizable()
+					.done();
+		
+		DataDefinition expectedDataDefinition =
+				DataDefinition.buildDefinition()
+					.withName(LocaleUtil.US, "Story")
+					.withName(LocaleUtil.BRAZIL, "Estória")
+					.ofStorageType("json")
+					.withFields(dataDefinitionField1, dataDefinitionField2)
+					.done();
+		
+		DataDefinitionSaveRequest dataDefinitionSaveRequest =
+				DataDefinitionSaveRequest.requestTo()
+					.save(expectedDataDefinition)
+					.onBehalfOf(_user.getUserId())
+					.inGroup(_group.getGroupId())
+					.done();
+		
+		long id = 
+				_dataDefinitionLocalService.save(dataDefinitionSaveRequest).getDataDefinitionId();
+
+		DataDefinition dataDefinitionFromStorage =
+				_dataDefinitionLocalService.get(
+					DataDefinitionGetRequest.requestTo().getById(id).done()
+				).getDataDefinition();
+
+		DataDefinitionField titleFiled = expectedDataDefinition.getField("title");
+		titleFiled = 
+				DataDefinitionField.buildFieldFrom(titleFiled)
+					.withTip(LocaleUtil.US, "Some tip")
+					.done();
+		
+		expectedDataDefinition = DataDefinition.buildDefinitionFrom(dataDefinitionFromStorage)
+				.withoutFields()
+				.withFields(titleFiled)
+				.done();
+
+		dataDefinitionSaveRequest =
+				DataDefinitionSaveRequest.requestTo()
+					.save(expectedDataDefinition)
+					.onBehalfOf(_user.getUserId())
+					.inGroup(_group.getGroupId())
+					.done();
+		
+		long newId = 
+				_dataDefinitionLocalService.save(dataDefinitionSaveRequest).getDataDefinitionId();
+
+		assertEquals(id, newId);
+		
+		dataDefinitionFromStorage =
+				_dataDefinitionLocalService.get(
+					DataDefinitionGetRequest.requestTo().getById(id).done()
+				).getDataDefinition();
+		
+		assertEquals(1, dataDefinitionFromStorage.getFields().size());
+		assertNull(dataDefinitionFromStorage.getField("deleteMe"));
+		assertEquals("Some tip", dataDefinitionFromStorage.getField("title").getTip(Locale.US));
+
+		
+		
 	}
 
 

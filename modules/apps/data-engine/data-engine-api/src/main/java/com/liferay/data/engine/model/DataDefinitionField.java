@@ -15,6 +15,7 @@
 package com.liferay.data.engine.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
@@ -65,12 +66,20 @@ public final class DataDefinitionField implements Serializable {
 		return Collections.unmodifiableMap(_label);
 	}
 
+	public String getLabel(Locale locale) {
+		return _label.get(LocaleUtil.toLanguageId(locale));
+	}
+
 	public String getName() {
 		return _name;
 	}
 
 	public Map<String, String> getTip() {
 		return Collections.unmodifiableMap(_tip);
+	}
+
+	public String getTip(Locale locale) {
+		return _tip.get(LocaleUtil.toLanguageId(locale));
 	}
 
 	public DataDefinitionColumnType getType() {
@@ -118,11 +127,24 @@ public final class DataDefinitionField implements Serializable {
 		return _required;
 	}
 	
+	public static Builder buildFieldFrom(DataDefinitionField dataDefinitionField) {
+		return new Builder(dataDefinitionField);
+	}
+
 	public static Builder buildField() {
 		return new Builder();
 	}
 
 	public static final class Builder {
+		
+		public Builder() {
+			_dataDefinitionField = new DataDefinitionField();
+		}
+
+		public Builder(DataDefinitionField dataDefinitionField) {
+			// TODO deep clone instead of reference  
+			_dataDefinitionField = dataDefinitionField;
+		}
 
 //		private static final String DEFAULT_NAME = "Unnamed";
 //		private static final DataDefinitionColumnType DEFAULT_TYPE = DataDefinitionColumnType.STRING;
@@ -239,9 +261,7 @@ public final class DataDefinitionField implements Serializable {
 			return this;
 		}
 
-		private final DataDefinitionField _dataDefinitionField =
-			new DataDefinitionField();
-
+		private final DataDefinitionField _dataDefinitionField;
 	}
 
 	private DataDefinitionField() {
